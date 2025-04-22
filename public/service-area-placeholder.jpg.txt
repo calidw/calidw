@@ -1,0 +1,5 @@
+Placeholder for Service Area Map Image
+
+Ideally, this would be replaced with:
+1. An actual map image highlighting the service region (e.g., Bay Area counties).
+2. A visually relevant graphic representing service or installation (e.g., illustration of a truck, tools, or a location pin). 
