@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { sanityClient } from '../../lib/sanity';
 import { useRouter } from 'next/navigation';
 
 interface Submission {
@@ -13,6 +12,32 @@ interface Submission {
   createdAt: string;
   status: 'new' | 'contacted' | 'completed';
 }
+
+// Mock data for static export
+const mockSubmissions: Submission[] = [
+  {
+    _id: '1',
+    name: 'John Doe',
+    email: 'john@example.com',
+    phone: '(555) 123-4567',
+    message: 'I need a quote for new windows.',
+    formType: 'quote',
+    productInterest: 'windows',
+    createdAt: '2025-04-20T10:00:00.000Z',
+    status: 'new'
+  },
+  {
+    _id: '2',
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    phone: '(555) 987-6543',
+    message: 'Looking for replacement doors.',
+    formType: 'contact',
+    productInterest: 'doors',
+    createdAt: '2025-04-18T14:30:00.000Z',
+    status: 'contacted'
+  },
+];
 
 export default function SubmissionsPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
@@ -28,7 +53,9 @@ export default function SubmissionsPage() {
     const auth = sessionStorage.getItem('adminAuth');
     if (auth === 'true') {
       setIsAuthenticated(true);
-      fetchSubmissions();
+      // Use mock data for static export
+      setSubmissions(mockSubmissions);
+      setIsLoading(false);
     } else {
       setIsLoading(false);
     }
@@ -37,48 +64,22 @@ export default function SubmissionsPage() {
   const authenticate = () => {
     // In a real app, this would be a secure auth endpoint
     // This is just a simple example - NEVER use this in production
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
+    const demoPassword = 'admin123'; // For demo purposes only
+    if (password === demoPassword) {
       sessionStorage.setItem('adminAuth', 'true');
       setIsAuthenticated(true);
-      fetchSubmissions();
+      setSubmissions(mockSubmissions);
     } else {
       setError('Invalid password');
     }
   };
 
-  const fetchSubmissions = async () => {
-    setIsLoading(true);
-    try {
-      const data = await sanityClient.fetch(`
-        *[_type == "formSubmission"] | order(createdAt desc) {
-          _id,
-          name,
-          email,
-          phone,
-          message,
-          formType,
-          productInterest,
-          createdAt,
-          status
-        }
-      `);
-      setSubmissions(data);
-    } catch (err) {
-      console.error('Error fetching submissions:', err);
-      setError('Failed to load submissions');
-    }
-    setIsLoading(false);
-  };
-
-  const updateSubmissionStatus = async (id: string, status: 'new' | 'contacted' | 'completed') => {
-    try {
-      await sanityClient.patch(id).set({ status }).commit();
-      // Refresh submissions after update
-      fetchSubmissions();
-    } catch (err) {
-      console.error('Error updating submission:', err);
-      setError('Failed to update submission');
-    }
+  const updateSubmissionStatus = (id: string, status: 'new' | 'contacted' | 'completed') => {
+    // Update locally for demo purposes
+    const updatedSubmissions = submissions.map(sub => 
+      sub._id === id ? {...sub, status} : sub
+    );
+    setSubmissions(updatedSubmissions);
   };
 
   const filterSubmissions = () => {
@@ -101,6 +102,9 @@ export default function SubmissionsPage() {
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="p-8 rounded-xl bg-white shadow-md w-full max-w-md">
           <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
+          <p className="text-center mb-4 text-sm bg-yellow-50 p-2 rounded border border-yellow-200">
+            For demo: Use password &quot;admin123&quot;
+          </p>
           {error && <p className="text-red-600 mb-4">{error}</p>}
           <div className="mb-4">
             <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
@@ -133,6 +137,12 @@ export default function SubmissionsPage() {
         >
           Back to Website
         </button>
+      </div>
+
+      <div className="text-center mb-6 p-4 bg-amber-50 border border-amber-200 rounded-md">
+        <p className="text-amber-800">
+          <strong>Demo Notice:</strong> This is a static demo with mock data for the Cloudflare Pages deployment.
+        </p>
       </div>
 
       {error && <p className="text-red-600 mb-4">{error}</p>}

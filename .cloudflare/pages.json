@@ -1,6 +1,8 @@
 {
   "name": "calidw",
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "nodeVersion": "20"
+  "build": {
+    "command": "npm run build",
+    "output_directory": "out",
+    "root_directory": "/"
+  }
 } 
