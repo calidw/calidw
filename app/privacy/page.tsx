@@ -99,14 +99,14 @@ export default function PrivacyPage() {
                 To exercise these rights, please contact us using the information provided at the end of this policy.
               </p>
               
-              <h2 className="text-2xl font-semibold text-slate-800 mt-10 mb-4">7. Children's Privacy</h2>
+              <h2 className="text-2xl font-semibold text-slate-800 mt-10 mb-4">7. Children&apos;s Privacy</h2>
               <p>
                 Our website and services are not directed to individuals under the age of 18. We do not knowingly collect personal information from children. If you believe we have inadvertently collected information from a child, please contact us immediately.
               </p>
               
               <h2 className="text-2xl font-semibold text-slate-800 mt-10 mb-4">8. Changes to This Privacy Policy</h2>
               <p>
-                We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. The updated version will be indicated by an updated "Last Updated" date.
+                We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. The updated version will be indicated by an updated &quot;Last Updated&quot; date.
               </p>
               
               <h2 className="text-2xl font-semibold text-slate-800 mt-10 mb-4">9. California Privacy Rights</h2>

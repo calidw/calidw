@@ -42,14 +42,12 @@ export default function TermsPage() {
               
               <h2 className="text-2xl font-semibold text-slate-800 mt-10 mb-4">4. Installation Services</h2>
               <p>
-                4.1. Installation services are performed by licensed professionals in accordance with building codes and manufacturer specifications.<br />
-                4.2. The customer is responsible for providing accurate information about existing structural conditions.<br />
-                4.3. Additional charges may apply if unforeseen circumstances arise during installation.
+                For customers who purchase installation services, Cali Door & Window will provide professional installation according to industry standards. The customer is responsible for ensuring the installation site is accessible and ready for installation. We aren&apos;t responsible for additional work required due to unforeseen structural issues discovered during installation.
               </p>
               
               <h2 className="text-2xl font-semibold text-slate-800 mt-10 mb-4">5. Warranties</h2>
               <p>
-                5.1. Product warranties are provided according to the manufacturer's terms and conditions.<br />
+                5.1. Product warranties are provided according to the manufacturer&apos;s terms and conditions.<br />
                 5.2. Installation services are warranted for a period of one year from completion date.<br />
                 5.3. Warranty claims must be submitted in writing and include proof of purchase.
               </p>
@@ -58,19 +56,17 @@ export default function TermsPage() {
               <p>
                 6.1. Full payment is due upon completion of installation unless otherwise specified in writing.<br />
                 6.2. Late payments are subject to a 1.5% monthly interest charge.<br />
-                6.3. Customer agrees to pay all reasonable attorney fees and collection costs in the event of non-payment.
+                6.3. Customer agrees to pay all reasonable attorney&apos;s fees and collection costs in the event of non-payment.
               </p>
               
               <h2 className="text-2xl font-semibold text-slate-800 mt-10 mb-4">7. Cancellation Policy</h2>
               <p>
-                7.1. Orders for stock items may be cancelled prior to shipping with no penalty.<br />
-                7.2. Custom orders cannot be cancelled once production has begun.<br />
-                7.3. Installation appointments cancelled with less than 48 hours notice may incur a rescheduling fee.
+                Orders for standard products may be canceled within 48 hours of placing the order without penalty. Custom orders cannot be canceled once production has begun. Installation services may be rescheduled with 48 hours&apos; notice.
               </p>
               
               <h2 className="text-2xl font-semibold text-slate-800 mt-10 mb-4">8. Limitation of Liability</h2>
               <p>
-                8.1. Cali Door & Window's liability is limited to the cost of the products and services provided.<br />
+                8.1. Cali Door & Window&apos;s liability is limited to the cost of the products and services provided.<br />
                 8.2. We are not liable for indirect, consequential, or incidental damages.<br />
                 8.3. We are not responsible for damages caused by improper maintenance, abuse, or natural disasters.
               </p>
