@@ -118,7 +118,7 @@ export default function GalleryPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex flex-wrap justify-center gap-3 mb-12"
             >
-              {categories.map((category, index) => (
+              {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setActiveFilter(category)}
@@ -196,7 +196,7 @@ export default function GalleryPage() {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-slate-700 mb-2">No projects found</h3>
-                <p className="text-slate-500">We don't have any projects in this category yet.</p>
+                <p className="text-slate-500">We don&apos;t have any projects in this category yet.</p>
               </MotionDiv>
             )}
           </div>

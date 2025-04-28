@@ -1,6 +1,6 @@
 'use client';
 
-import { getAllProducts, Product } from './data/products';
+import { Product } from './data/products';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import HeroBanner from './components/HeroBanner';
@@ -8,7 +8,7 @@ import ProductGrid from './components/ProductGrid';
 import Testimonials from './components/Testimonials';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 // Animation variants for staggered reveals
 const fadeInUp = {

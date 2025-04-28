@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 // Create explicit motion components for React 19 compatibility
 const MotionDiv = motion.div;
@@ -122,7 +123,7 @@ const Testimonials = ({
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
         >
-          {itemsToDisplay.map((testimonial, index) => (
+          {itemsToDisplay.map((testimonial) => (
             <MotionDiv
               key={testimonial.id}
               variants={fadeInUp}
@@ -143,15 +144,17 @@ const Testimonials = ({
                 {testimonial.rating && <StarRating rating={testimonial.rating} />}
                 
                 <p className="text-slate-600 text-lg italic leading-relaxed mb-6 flex-grow">
-                   "{testimonial.quote}"
+                  &ldquo;{testimonial.quote}&rdquo;
                 </p>
                 
                 <footer className="mt-auto pt-6 border-t border-slate-100 flex items-center">
                   {testimonial.image ? (
-                    <img 
+                    <Image 
                       src={testimonial.image} 
                       alt={`${testimonial.author}`}
-                      className="w-10 h-10 rounded-full object-cover mr-3"
+                      width={40}
+                      height={40}
+                      className="rounded-full object-cover mr-3"
                     />
                   ) : (
                     <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 rounded-full flex items-center justify-center text-white mr-3 text-xl font-bold">

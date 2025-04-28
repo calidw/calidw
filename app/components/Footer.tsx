@@ -10,21 +10,17 @@ const Footer = () => {
     products: [
       { name: 'Windows', href: '/windows' },
       { name: 'Doors', href: '/doors' },
-      { name: 'Accessories', href: '/products/accessories' },
-      { name: 'Custom Solutions', href: '/contact?topic=custom' },
+      { name: 'Request Quote', href: '/contact?form=quote' },
     ],
     company: [
       { name: 'About Us', href: '/about' },
       { name: 'Gallery', href: '/gallery' },
       { name: 'Services', href: '/services' },
-      { name: 'Careers', href: '/careers' },
     ],
     support: [
       { name: 'Contact Us', href: '/contact' },
-      { name: 'Request a Quote', href: '/contact?form=quote' },
-      { name: 'Showroom', href: '/contact#showroom' },
-      { name: 'FAQs', href: '/faqs' },
-      { name: 'Warranty', href: '/warranty' },
+      { name: 'FAQ', href: '/faq' },
+      { name: 'Testimonials', href: '/testimonials' },
     ]
   };
 

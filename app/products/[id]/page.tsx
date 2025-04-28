@@ -29,6 +29,7 @@ export function generateStaticParams() {
 }
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
+  // This is now a server component
   const product = getProductById(params.id);
   
   if (!product) {

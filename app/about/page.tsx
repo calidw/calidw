@@ -28,7 +28,7 @@ export default function AboutPage() {
                 About Cali Door & Window
               </h1>
               <p className="text-lg lg:text-xl text-slate-300 leading-relaxed">
-                We're passionate about transforming homes and businesses with quality doors and windows
+                We&apos;re passionate about transforming homes and businesses with quality doors and windows
                 that combine beauty, functionality, and energy efficiency.
               </p>
             </div>
@@ -58,7 +58,7 @@ export default function AboutPage() {
                   contractors with high-quality door and window solutions backed by exceptional service.
                 </p>
                 <p>
-                  What started as a small family business has grown into one of the Bay Area's most trusted 
+                  What started as a small family business has grown into one of the Bay Area&apos;s most trusted 
                   suppliers of premium doors and windows. Our growth is a testament to our unwavering 
                   commitment to quality products and customer satisfaction.
                 </p>

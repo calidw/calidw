@@ -28,7 +28,7 @@ export default function ContactPage() {
                 Contact Us
               </h1>
               <p className="text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
-                We're here to answer your questions and help you find the perfect doors and windows for your project. 
+                We&apos;re here to answer your questions and help you find the perfect doors and windows for your project. 
                 Reach out using the form below or contact us directly.
               </p>
             </div>

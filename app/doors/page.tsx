@@ -21,7 +21,7 @@ export default function DoorsPage() {
             <h1 className="text-4xl font-bold text-gray-800 mb-4">Doors</h1>
             <p className="text-gray-600 max-w-3xl">
               Discover our extensive collection of quality interior and patio doors. From elegant French doors to modern 
-              sliding designs, we offer a variety of styles to enhance your home's aesthetics and functionality.
+              sliding designs, we offer a variety of styles to enhance your home&apos;s aesthetics and functionality.
               Our patio doors are energy efficient and California Title 24 compliant, helping you save on energy costs.
             </p>
           </div>
@@ -32,7 +32,7 @@ export default function DoorsPage() {
               <div>
                 <h3 className="font-bold text-amber-600 mb-2">Energy Efficiency</h3>
                 <p className="text-gray-700">
-                  Our exterior and patio doors meet California Title 24 requirements with superior insulation to help maintain your home's temperature and reduce energy costs.
+                  Our exterior and patio doors meet California Title 24 requirements with superior insulation to help maintain your home&apos;s temperature and reduce energy costs.
                 </p>
               </div>
               <div>
@@ -44,7 +44,7 @@ export default function DoorsPage() {
               <div>
                 <h3 className="font-bold text-amber-600 mb-2">Security & Style</h3>
                 <p className="text-gray-700">
-                  Built with reinforced materials and advanced locking systems while available in various styles to complement your home's architecture.
+                  Built with reinforced materials and advanced locking systems while available in various styles to complement your home&apos;s architecture.
                 </p>
               </div>
             </div>
@@ -57,7 +57,7 @@ export default function DoorsPage() {
                 <div className="p-5 bg-gray-50">
                   <h3 className="text-xl font-bold text-gray-800 mb-2">Interior Doors</h3>
                   <p className="text-gray-600">
-                    Our interior doors are designed to complement your home's aesthetic while providing privacy and sound insulation between rooms.
+                    Our interior doors are designed to complement your home&apos;s aesthetic while providing privacy and sound insulation between rooms.
                   </p>
                 </div>
               </div>

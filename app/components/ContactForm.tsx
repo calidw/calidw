@@ -115,7 +115,7 @@ const ContactForm = () => {
             </div>
             <div className="ml-4">
               <h3 className="text-lg font-semibold text-green-800">Thank you for your message!</h3>
-              <p className="mt-2 text-green-700">We'll be in touch shortly to discuss your project.</p>
+              <p className="mt-2 text-green-700">We&apos;ll be in touch shortly to discuss your project.</p>
               <motion.button 
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
@@ -219,7 +219,7 @@ const ContactForm = () => {
             custom={3}
           >
             <label htmlFor="interest" className="block text-sm font-medium text-slate-700 mb-2 pl-1">
-              I'm interested in <span className="text-red-500">*</span>
+              I&apos;m interested in <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <select

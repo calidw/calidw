@@ -4,11 +4,6 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 import { Product } from '../data/products';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-
-// Create explicit motion components for React 19 compatibility
-const MotionDiv = motion.div;
 
 type ProductGridProps = {
   products: Product[];
@@ -18,23 +13,6 @@ type ProductGridProps = {
   title?: string;
   subtitle?: string;
 };
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
-
-// Window and door type arrays removed
 
 export default function ProductGrid({
   products,
@@ -74,17 +52,6 @@ export default function ProductGrid({
     setDisplayedProducts(filtered);
   }, [products, activeCategory, featuredOnly, maxProducts]);
   
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-  
   return (
     <div className="w-full">
       {title && (
@@ -116,7 +83,6 @@ export default function ProductGrid({
       <AnimatePresence mode="wait">
         <motion.div
           key={activeCategory}
-          variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"

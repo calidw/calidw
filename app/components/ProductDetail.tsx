@@ -10,11 +10,7 @@ interface ProductDetailProps {
 }
 
 const ProductDetail = ({ product }: ProductDetailProps) => {
-  const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<'description' | 'features' | 'specifications'>('description');
-
-  const incrementQuantity = () => setQuantity(prev => prev + 1);
-  const decrementQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
   const tabButtonBase = "pb-3 text-sm font-medium border-b-2 transition-colors duration-200 focus:outline-none";
   const tabButtonActive = "border-amber-600 text-amber-600";
