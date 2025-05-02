@@ -40,38 +40,24 @@ export default async function ProductPage({ params }: { params: { id: string } }
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-grow py-8">
+      <main className="flex-grow pb-0">
         <ProductDetail product={product} />
         
-        <div className="container mx-auto px-4 py-8 mt-8">
-          <h2 className="text-2xl font-bold text-slate-800 mb-6">Related Information</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-amber-50 p-6 rounded-lg border border-amber-100">
-              <h3 className="text-xl font-semibold text-amber-800 mb-3">Installation Services</h3>
-              <p className="text-slate-700 mb-4">
-                Our professional installation team ensures your new {product.category} is properly installed
-                for optimal performance and energy efficiency.
+        {/* Contact Section */}
+        <div className="bg-gradient-to-r from-slate-900 to-slate-800 py-16 mt-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-3xl font-bold text-white mb-4">Questions About This {product.category}?</h2>
+              <p className="text-slate-300 text-lg mb-8">
+                Our team of experts is ready to help you choose the perfect {product.category.toLowerCase()} 
+                for your home or business. Contact us today for pricing, technical specifications, or to schedule 
+                a consultation.
               </p>
               <a 
-                href="/contact" 
-                className="text-amber-600 font-medium hover:text-amber-800"
+                href={`/contact?product=${encodeURIComponent(product.name)}&id=${product.id}`}
+                className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-amber-600 text-white font-semibold shadow-lg hover:bg-amber-500 transition-all duration-300 transform hover:-translate-y-1"
               >
-                Contact us for installation quotes →
-              </a>
-            </div>
-            
-            <div className="bg-amber-50 p-6 rounded-lg border border-amber-100">
-              <h3 className="text-xl font-semibold text-amber-800 mb-3">Maintenance Tips</h3>
-              <p className="text-slate-700 mb-4">
-                Proper maintenance of your {product.category} will extend its lifespan and maintain its appearance
-                and functionality for years to come.
-              </p>
-              <a 
-                href="#" 
-                className="text-amber-600 font-medium hover:text-amber-800"
-              >
-                View maintenance guide →
+                Contact Us For More Information
               </a>
             </div>
           </div>

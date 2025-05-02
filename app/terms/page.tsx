@@ -86,7 +86,7 @@ export default function TermsPage() {
                 If you have any questions about these Terms of Service, please contact us at:<br />
                 <strong>Email:</strong> Sales@calidw.com<br />
                 <strong>Phone:</strong> (818) 282-3437<br />
-                <strong>Address:</strong> 123 Window Lane, San Francisco, CA 94103
+                <strong>Address:</strong> 3746 Foothill Boulevard #1254, Glendale, CA 91214
               </p>
             </div>
           </div>

@@ -1,18 +1,12 @@
 import Image from 'next/image';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'About Us | Cali Door & Window',
   description: 'Learn about Cali Door & Window and our commitment to quality, service, and customer satisfaction.',
 };
-
-const team = [
-  { name: 'John Smith', role: 'Founder & CEO', imageUrl: '/placeholder.jpg' },
-  { name: 'Sarah Johnson', role: 'Design Director', imageUrl: '/placeholder.jpg' },
-  { name: 'Michael Chen', role: 'Installation Manager', imageUrl: '/placeholder.jpg' },
-  { name: 'Lisa Rodriguez', role: 'Customer Relations', imageUrl: '/placeholder.jpg' },
-];
 
 export default function AboutPage() {
   return (
@@ -54,17 +48,17 @@ export default function AboutPage() {
                   Our Story
                 </h2>
                 <p>
-                  Founded in 2005, Cali Door & Window began with a simple mission: to provide homeowners and 
+                  Cali Door & Window was established with a simple mission: to provide homeowners and 
                   contractors with high-quality door and window solutions backed by exceptional service.
                 </p>
                 <p>
-                  What started as a small family business has grown into one of the Bay Area&apos;s most trusted 
-                  suppliers of premium doors and windows. Our growth is a testament to our unwavering 
-                  commitment to quality products and customer satisfaction.
+                  While we are a new business, our team brings over 15 years of industry experience 
+                  in door and window installation, design, and customer service. Our expertise makes us one of the 
+                  most knowledgeable teams in the Los Angeles area for premium doors and windows.
                 </p>
                 <p>
-                  Today, we continue to uphold the values that have guided us from the beginning: integrity, 
-                  craftsmanship, and a customer-first approach to everything we do.
+                  We uphold the values that guide everything we do: integrity, 
+                  craftsmanship, and a customer-first approach to every project we undertake.
                 </p>
               </div>
             </div>
@@ -120,30 +114,156 @@ export default function AboutPage() {
           </div>
         </section>
         
-        {/* Our Team - Updated colors and uses team data */}
+        {/* Service Areas Section */}
         <section className="py-16 md:py-20 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-12 md:mb-16 text-center">
-              Meet Our Team
-            </h2>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {team.map((person) => (
-                <div key={person.name} className="text-center bg-slate-50 p-6 rounded-lg border border-slate-100">
-                  <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden mb-5 shadow-md">
-                    <Image
-                      src={person.imageUrl} // Uses /placeholder.jpg from team data
-                      alt={person.name}
-                      fill
-                      className="object-cover"
-                      sizes="128px"
-                    />
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-10 text-center">
+                Where We Serve
+              </h2>
+              
+              <div className="bg-slate-50 rounded-xl p-8 md:p-10 shadow-sm border border-slate-100 mb-12">
+                <div className="prose prose-lg max-w-none text-slate-600">
+                  <p>
+                    Cali Door & Window proudly serves residential and commercial clients throughout the greater Los Angeles area. 
+                    Our service territory includes:
+                  </p>
+                  
+                  <div className="my-8 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-5 md:p-6 transition-all hover:shadow-md hover:border-amber-200 h-full">
+                        <div className="flex items-center mb-3">
+                          <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                            <svg className="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                          <h4 className="text-lg font-semibold text-slate-800">Glendale</h4>
+                        </div>
+                        <p className="text-slate-600 text-sm">Premium door and window installation services for Glendale homes and businesses.</p>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-5 md:p-6 transition-all hover:shadow-md hover:border-amber-200 h-full">
+                        <div className="flex items-center mb-3">
+                          <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                            <svg className="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                          <h4 className="text-lg font-semibold text-slate-800">Burbank</h4>
+                        </div>
+                        <p className="text-slate-600 text-sm">Expert door and window solutions for Burbank residences and commercial spaces.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
+                      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-5 md:p-6 transition-all hover:shadow-md hover:border-amber-200 h-full">
+                        <div className="flex items-center mb-3">
+                          <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                            <svg className="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                          <h4 className="text-lg font-semibold text-slate-800">Pasadena</h4>
+                        </div>
+                        <p className="text-slate-600 text-sm">Quality window and door installations tailored to Pasadena's architectural styles.</p>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-5 md:p-6 transition-all hover:shadow-md hover:border-amber-200 h-full">
+                        <div className="flex items-center mb-3">
+                          <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                            <svg className="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                          <h4 className="text-lg font-semibold text-slate-800">Hollywood</h4>
+                        </div>
+                        <p className="text-slate-600 text-sm">Elegant door and window solutions for Hollywood's diverse residential and commercial spaces.</p>
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-800">{person.name}</h3>
-                  {/* Updated role text color */}
-                  <p className="text-sm text-amber-700">{person.role}</p>
+                  
+                  <p>
+                    With over 15 years of combined industry experience, our team has completed hundreds of successful 
+                    door and window installations throughout the Los Angeles region. We understand the unique architectural 
+                    styles found in Southern California homes and businesses, from Spanish Colonial and Craftsman to Mid-Century 
+                    Modern and Contemporary designs.
+                  </p>
+                  
+                  <div className="mt-8 text-center">
+                    <Link 
+                      href="/contact" 
+                      className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-amber-600 hover:bg-amber-700 transition-colors"
+                    >
+                      Contact Us for Your Project
+                    </Link>
+                  </div>
                 </div>
-              ))}
+              </div>
+              
+              <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-8 md:p-10 shadow-lg text-white">
+                <h3 className="text-2xl font-bold mb-6">Our Expertise</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="text-lg font-semibold text-amber-400 mb-3">Window Specializations</h4>
+                    <ul className="space-y-2 text-slate-300">
+                      <li className="flex items-center">
+                        <svg className="h-5 w-5 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Energy-efficient vinyl windows
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-5 w-5 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Custom wood and aluminum windows
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-5 w-5 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Specialty and architectural windows
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-5 w-5 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Window replacements and retrofits
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-amber-400 mb-3">Door Specializations</h4>
+                    <ul className="space-y-2 text-slate-300">
+                      <li className="flex items-center">
+                        <svg className="h-5 w-5 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Entry and exterior doors
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-5 w-5 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Sliding and French patio doors
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-5 w-5 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Interior doors and barn doors
+                      </li>
+                      <li className="flex items-center">
+                        <svg className="h-5 w-5 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Folding and multi-slide door systems
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

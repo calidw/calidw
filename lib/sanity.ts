@@ -21,11 +21,16 @@ export function urlFor(source: SanityImageSource): ImageUrlBuilder {
 export async function getHomePageData() {
   return sanityClient.fetch(`
     *[_type == "homePage"][0]{
+      title,
       hero {
         title,
         subtitle,
-        "backgroundImage": backgroundImage.asset->url,
-        "backgroundVideo": backgroundVideo.asset->url,
+        sliderItems[]{
+          "image": image.asset->url,
+          alt,
+          label,
+          description
+        },
         buttonPrimary,
         buttonPrimaryLink,
         buttonSecondary,
@@ -77,6 +82,14 @@ export async function getHomePageData() {
         title,
         subtitle,
         displayCount
+      },
+      serviceAreas[]->{
+        _id,
+        name,
+        slug,
+        description,
+        "image": image.asset->url,
+        featured
       }
     }
   `);
@@ -164,6 +177,7 @@ export async function getGalleryItems() {
       description,
       "image": image.asset->url,
       category->{name},
+      featured,
       publishedAt
     }
   `);
@@ -180,12 +194,6 @@ export async function getAboutPageData() {
         year,
         title,
         description
-      },
-      team[]{
-        name,
-        position,
-        "image": image.asset->url,
-        bio
       },
       values[]{
         title,
@@ -218,4 +226,48 @@ export async function getContactInfo() {
       socialLinks
     }
   `);
+}
+
+export async function getServiceAreas(featured?: boolean) {
+  let query = `
+    *[_type == "serviceArea"] | order(name asc) {
+      _id,
+      name,
+      slug,
+      description,
+      "image": image.asset->url,
+      zipCodes,
+      featured
+    }
+  `;
+
+  if (featured) {
+    query = `
+      *[_type == "serviceArea" && featured == true] | order(name asc) {
+        _id,
+        name,
+        slug,
+        description,
+        "image": image.asset->url,
+        zipCodes,
+        featured
+      }
+    `;
+  }
+
+  return sanityClient.fetch(query);
+}
+
+export async function getServiceAreaBySlug(slug: string) {
+  return sanityClient.fetch(`
+    *[_type == "serviceArea" && slug.current == $slug][0]{
+      _id,
+      name,
+      slug,
+      description,
+      "image": image.asset->url,
+      zipCodes,
+      featured
+    }
+  `, { slug });
 } 

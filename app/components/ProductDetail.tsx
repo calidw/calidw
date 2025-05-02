@@ -10,7 +10,7 @@ interface ProductDetailProps {
 }
 
 const ProductDetail = ({ product }: ProductDetailProps) => {
-  const [activeTab, setActiveTab] = useState<'description' | 'features' | 'specifications'>('description');
+  const [activeTab, setActiveTab] = useState<'features' | 'specifications'>('features');
 
   const tabButtonBase = "pb-3 text-sm font-medium border-b-2 transition-colors duration-200 focus:outline-none";
   const tabButtonActive = "border-amber-600 text-amber-600";
@@ -44,22 +44,23 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
           <div className="mt-auto pt-6">
             <Link
               href={`/contact?product=${encodeURIComponent(product.name)}&id=${product.id}`}
-              className={`w-full flex items-center justify-center px-8 py-3 border border-transparent rounded-md shadow-sm text-base font-semibold text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 ${!product.inStock ? 'bg-slate-400 cursor-not-allowed' : 'bg-amber-600 hover:bg-amber-700 hover:scale-[1.01]'}`}
+              className={`w-full flex items-center justify-center px-8 py-4 border border-transparent rounded-full shadow-md text-base font-semibold text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 ${!product.inStock ? 'bg-slate-400 cursor-not-allowed' : 'bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 group'}`}
               aria-disabled={!product.inStock}
             >
-              {product.inStock ? 'Request a Quote' : 'Currently Unavailable'}
+              {product.inStock ? (
+                <span className="flex items-center">
+                  Request a Quote 
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </span>
+              ) : 'Currently Unavailable'}
             </Link>
           </div>
           
           <div className="mt-10">
             <div className="border-b border-slate-200">
               <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-                <button
-                  onClick={() => setActiveTab('description')}
-                  className={`${tabButtonBase} ${activeTab === 'description' ? tabButtonActive : tabButtonInactive}`}
-                >
-                  Description
-                </button>
                 <button
                   onClick={() => setActiveTab('features')}
                   className={`${tabButtonBase} ${activeTab === 'features' ? tabButtonActive : tabButtonInactive}`}
@@ -76,11 +77,6 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
             </div>
 
             <div className="mt-6 text-sm text-slate-600 prose max-w-none">
-              {activeTab === 'description' && (
-                <div>
-                  <p>{product.description}</p>
-                </div>
-              )}
               {activeTab === 'features' && (
                 <div>
                   <ul role="list" className="list-disc space-y-2 pl-5">
