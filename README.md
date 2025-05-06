@@ -34,3 +34,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Theming
+
+The website uses a consistent color scheme throughout all components with red as the primary brand color. To maintain this consistency, we've created a theme reference file:
+
+- `theme.js` - Contains color variables, button styles, and other design elements
+
+When making changes to the UI, please refer to this file for the correct color values and component styles. All buttons should use the standardized gradient (`from-red-800 to-red-700` with a hover state of `from-red-600 to-red-500`).

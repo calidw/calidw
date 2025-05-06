@@ -38,14 +38,18 @@ export default defineType({
             }),
             defineField({
               name: 'icon',
-              title: 'Icon',
-              type: 'string',
-              description: 'Icon name from your icon library',
+              title: 'Icon Image',
+              type: 'image',
+              options: {
+                hotspot: true,
+              },
+              description: 'Upload a PNG icon image (recommended size: 64x64px)',
             }),
           ],
           preview: {
             select: {
               title: 'title',
+              media: 'icon'
             },
           },
         },

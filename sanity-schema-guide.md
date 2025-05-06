@@ -1,1262 +1,481 @@
-# Sanity CMS Schema for Cali Door & Window
+# Cali Door & Window - Sanity Schema Guide
 
-This guide will help you set up the Sanity Studio for your Cali Door & Window website.
+This document provides a comprehensive reference for the Sanity schema structure used in the Cali Door & Window website. It includes all content types, fields, relationships, and implementation examples.
 
-## Installation and Setup
+## Table of Contents
 
-1. Create a new Sanity project:
-```bash
-npm create sanity@latest -- --template clean
+1. [Document Types](#document-types)
+   - [Product](#product)
+   - [Category](#category)
+   - [HomePage](#homepage)
+   - [Gallery](#gallery)
+   - [Testimonial](#testimonial)
+   - [AboutPage](#aboutpage)
+   - [FAQ](#faq)
+   - [ContactInfo](#contactinfo)
+   - [ServiceArea](#servicearea)
+   
+2. [Object Types](#object-types)
+   - [Hero](#hero)
+   - [SliderItem](#slideritem)
+   - [Features](#features)
+   - [FeatureItem](#featureitem)
+   - [WhyChooseUs](#whychooseus)
+   - [Offerings](#offerings)
+   - [OfferingItem](#offeringitem)
+   - [TestimonialSection](#testimonialsection)
+   - [HistoryItem](#historyitem)
+   - [ValueItem](#valueitem)
+   - [Dimensions](#dimensions)
+   - [SocialLink](#sociallink)
+
+3. [Relationship Diagram](#relationship-diagram)
+
+4. [Implementation Details](#implementation-details)
+   - [Mobile Optimizations](#mobile-optimizations)
+   - [Gallery Zoom Functionality](#gallery-zoom-functionality)
+   - [Connected Content](#connected-content)
+
+5. [Usage Examples](#usage-examples)
+
+---
+
+## Document Types
+
+### Product
+
+Products represent the door and window offerings. Each product has details like name, images, price, features, and dimensions.
+
+**Key Fields:**
+- `name`: Product name (string, required)
+- `slug`: URL-friendly identifier (slug, required)
+- `mainImage`: Primary product image (image, required)
+- `gallery`: Collection of product images (array of images)
+- `category`: Reference to a category (reference)
+- `price`: Product price (number, required)
+- `description`: Product description (text, required)
+- `features`: Array of product features (array of strings, min 1)
+- `materials`: Array of materials used (array of strings, min 1)
+- `dimensions`: Object with width, height, depth, and unit (object)
+- `inStock`: Boolean indicating availability (boolean)
+- `seoDescription`: SEO-friendly description (text)
+- `relatedProducts`: References to other products (array of references, unique)
+
+### Category
+
+Categories organize products into groups like doors, windows, etc.
+
+**Key Fields:**
+- `name`: Category name (string, required)
+- `slug`: URL-friendly identifier (slug, required)
+- `description`: Optional category description (text)
+- `image`: Category image (image)
+
+### HomePage
+
+The homepage configuration includes all sections like hero, featured products, etc.
+
+**Key Fields:**
+- `title`: Page title (string, required)
+- `hero`: Hero section configuration (object, required)
+- `featuredProducts`: References to featured products (array of references)
+  - Limited to maximum 6 products
+  - Each reference must be unique
+- `whyChooseUs`: Why Choose Us section configuration (object)
+- `features`: Features section configuration (object)
+- `offerings`: Offerings section configuration (object)
+- `testimonialSection`: Testimonial section configuration (object)
+- `gallerySection`: Gallery section (object)
+  - `title`: Section title (string)
+  - `subtitle`: Section subtitle (string)
+  - `items`: References to gallery items (array of references, max 12)
+- `serviceAreas`: References to service areas (array of references)
+
+### Gallery
+
+Gallery items represent project images and installations.
+
+**Key Fields:**
+- `title`: Gallery item title (string, required)
+- `description`: Description text (text)
+- `image`: Main gallery image (image, required)
+- `fullSizeImage`: High-resolution image for zoom view (image)
+- `projectDetails`: Project specifications (array of objects)
+  - Each object has `label` and `value` fields (both strings, required)
+- `category`: Reference to a category (reference)
+- `featured`: Boolean to highlight in gallery (boolean)
+- `relatedProducts`: References to products used in the project (array of references, unique)
+- `publishedAt`: Publication date (datetime)
+
+### Testimonial
+
+Customer testimonials and reviews.
+
+**Key Fields:**
+- `quote`: Testimonial text (text, required)
+- `author`: Customer name (string, required)
+- `location`: Customer location (string)
+- `rating`: Rating value 1-5 (number, required)
+- `image`: Optional customer image (image)
+- `publishedAt`: Publication date (datetime)
+
+### AboutPage
+
+The about page configuration with company information.
+
+**Key Fields:**
+- `title`: Page title (string, required)
+- `heroSection`: Hero section (object)
+  - `heading`: Main heading (string, required)
+  - `subheading`: Secondary heading (text)
+  - `backgroundImage`: Background image (image)
+- `introduction`: Introduction text (text, required)
+- `mission`: Mission statement (text, required)
+- `image`: Main company image (image, required)
+- `history`: Array of history items (array of historyItem objects)
+- `values`: Array of company values (array of valueItem objects)
+- `expertise`: Areas of expertise (array of objects)
+  - Each object has `title` (string, required) and `items` (array of strings, required)
+- `teamMembers`: Team member profiles (array of objects)
+  - Each object has:
+    - `name`: Team member name (string, required)
+    - `position`: Job title (string, required)
+    - `bio`: Biography (text)
+    - `image`: Team member photo (image)
+- `serviceAreas`: References to service areas (array of references)
+
+### FAQ
+
+Frequently asked questions organized by category.
+
+**Key Fields:**
+- `question`: The question (string, required)
+- `answer`: The answer (text, required)
+- `category`: Question category (string)
+- `order`: Display order (number)
+
+### ContactInfo
+
+Company contact information.
+
+**Key Fields:**
+- `address`: Physical address (text, required)
+- `phone`: Phone number (string, required)
+- `email`: Email address (string, required)
+- `hours`: Business hours (text)
+- `mapLocation`: Map coordinates (object with lat/lng)
+- `socialLinks`: Social media links (array of socialLink objects)
+
+### ServiceArea
+
+Geographic service areas.
+
+**Key Fields:**
+- `name`: Area name (string, required)
+- `slug`: URL-friendly identifier (slug, required)
+- `description`: Area description (text)
+- `image`: Area image (image)
+- `zipCodes`: Array of ZIP codes served (array of strings)
+- `featured`: Boolean to highlight service area (boolean)
+
+---
+
+## Object Types
+
+### Hero
+
+Hero section configuration.
+
+**Key Fields:**
+- `title`: Section title (string, required)
+- `subtitle`: Section subtitle (string)
+- `sliderItems`: Array of slider items (array of sliderItem objects, min 1)
+- `mobileLayout`: Controls image/text order on mobile devices (string)
+  - Options: 'imageFirst' or 'textFirst'
+  - Default: 'imageFirst'
+- `overlayOpacity`: Controls the opacity of the dark overlay on slider images (number, 0-100, default 40)
+- `buttonPrimary`: Primary button text (string)
+- `buttonPrimaryLink`: Primary button URL (string)
+- `buttonSecondary`: Secondary button text (string)
+- `buttonSecondaryLink`: Secondary button URL (string)
+
+### SliderItem
+
+Individual slides for the hero section slider.
+
+**Key Fields:**
+- `image`: Slide image (image, required)
+- `mobileImage`: Optimized image for mobile devices (image)
+- `alt`: Image alt text (string, required)
+- `label`: Slide label (string)
+- `description`: Slide description (text)
+- `buttonText`: Optional button text (string)
+- `buttonLink`: Optional button URL (string)
+- `textPosition`: Text position on slide (string)
+  - Options: 'left', 'center', 'right'
+  - Default: 'left'
+
+### Features
+
+Features section configuration.
+
+**Key Fields:**
+- `title`: Section title (string, required)
+- `subtitle`: Section subtitle (string)
+- `featureItems`: Array of feature items (array of featureItem objects, min 1)
+
+### FeatureItem
+
+Individual feature.
+
+**Key Fields:**
+- `title`: Feature title (string, required)
+- `description`: Feature description (text)
+- `icon`: Icon name or identifier (string)
+- `link`: Optional link URL (string)
+- `linkText`: Optional link text (string)
+
+### WhyChooseUs
+
+Why Choose Us section configuration.
+
+**Key Fields:**
+- `title`: Section title (string, required)
+- `subtitle`: Section subtitle (string)
+- `features`: Array of features (array of objects, min 1)
+  - Each object has:
+    - `title`: Feature title (string, required)
+    - `description`: Feature description (text, required)
+    - `icon`: Icon name or identifier (string)
+
+### Offerings
+
+Offerings section configuration.
+
+**Key Fields:**
+- `title`: Section title (string, required)
+- `description`: Section description (text)
+- `image`: Section image (image)
+- `items`: Array of offering items (array of offeringItem objects, min 1)
+
+### OfferingItem
+
+Individual offering.
+
+**Key Fields:**
+- `title`: Offering title (string, required)
+- `description`: Offering description (text)
+
+### TestimonialSection
+
+Testimonial section configuration.
+
+**Key Fields:**
+- `title`: Section title (string, required)
+- `subtitle`: Section subtitle (string)
+- `displayCount`: Number of testimonials to display (number, min 1, default 3)
+
+### HistoryItem
+
+Company history milestone.
+
+**Key Fields:**
+- `year`: Year or time period (string, required)
+- `title`: Milestone title (string, required)
+- `description`: Milestone description (text)
+
+### ValueItem
+
+Company value.
+
+**Key Fields:**
+- `title`: Value title (string, required)
+- `description`: Value description (text)
+- `icon`: Icon name or identifier (string)
+
+### Dimensions
+
+Product dimensions.
+
+**Key Fields:**
+- `width`: Width value (number, required)
+- `height`: Height value (number, required)
+- `depth`: Optional depth value (number)
+- `unit`: Unit of measurement (string)
+  - Options: 'in', 'ft', 'cm', 'mm'
+  - Default: 'in'
+
+### SocialLink
+
+Social media link.
+
+**Key Fields:**
+- `platform`: Platform name (string, required)
+  - Options include: 'facebook', 'instagram', 'twitter', 'linkedin', 'youtube', 'pinterest', 'tiktok'
+- `url`: Social media URL (url, required)
+
+---
+
+## Relationship Diagram
+
+```
+HomePage
+├── Hero
+│   └── SliderItem (multiple)
+├── Product (references, up to 6)
+├── WhyChooseUs
+│   └── Feature (multiple)
+├── Features
+│   └── FeatureItem (multiple)
+├── Offerings
+│   └── OfferingItem (multiple)
+├── TestimonialSection
+├── Gallery (references, multiple)
+└── ServiceArea (references, multiple)
+
+AboutPage
+├── HeroSection
+├── HistoryItem (multiple)
+├── ValueItem (multiple)
+├── Expertise (multiple)
+│   └── Items (multiple strings)
+├── TeamMembers (multiple)
+└── ServiceArea (references, multiple)
+
+Product
+├── Category (reference)
+├── Dimensions
+└── Product (references for related products)
+
+Gallery
+├── Category (reference)
+├── ProjectDetails (multiple label/value pairs)
+└── Product (references for related products)
+
+ContactInfo
+└── SocialLink (multiple)
 ```
 
-2. During setup:
-   - Give your project a name (e.g., "Cali Door & Window CMS")
-   - Use the default dataset configuration
-   - Select "Yes" to use TypeScript
-   - Choose the "Clean project with no predefined schemas" template
-
-3. Navigate to your project and start Sanity Studio:
-```bash
-cd your-studio-name
-npm run dev
-```
-
-4. Open http://localhost:3333 to access Sanity Studio.
-
-## Schema Configuration
-
-Replace the contents of your `schema.ts` file with the following schema configuration:
-
-```typescript
-import { type SchemaTypeDefinition } from 'sanity'
-
-// Document types
-import product from './schemas/documents/product'
-import category from './schemas/documents/category'
-import homePage from './schemas/documents/homePage'
-import gallery from './schemas/documents/gallery'
-import testimonial from './schemas/documents/testimonial'
-import aboutPage from './schemas/documents/aboutPage'
-import faq from './schemas/documents/faq'
-import contactInfo from './schemas/documents/contactInfo'
-import formSubmission from './schemas/documents/formSubmission'
-
-// Object types
-import hero from './schemas/objects/hero'
-import features from './schemas/objects/features'
-import featureItem from './schemas/objects/featureItem'
-import whyChooseUs from './schemas/objects/whyChooseUs'
-import offerings from './schemas/objects/offerings'
-import offeringItem from './schemas/objects/offeringItem'
-import testimonialSection from './schemas/objects/testimonialSection'
-import teamMember from './schemas/objects/teamMember'
-import historyItem from './schemas/objects/historyItem'
-import valueItem from './schemas/objects/valueItem'
-import dimensions from './schemas/objects/dimensions'
-import socialLink from './schemas/objects/socialLink'
-
-export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [
-    // Documents
-    product,
-    category,
-    homePage,
-    gallery,
-    testimonial,
-    aboutPage,
-    faq,
-    contactInfo,
-    formSubmission,
-    
-    // Objects
-    hero,
-    features,
-    featureItem,
-    whyChooseUs,
-    offerings,
-    offeringItem,
-    testimonialSection,
-    teamMember,
-    historyItem,
-    valueItem,
-    dimensions,
-    socialLink,
-  ],
-}
-```
-
-## Folder Structure
-
-Create the following folder structure:
-
-```
-schemas/
-  ├── documents/
-  │   ├── product.ts
-  │   ├── category.ts
-  │   ├── homePage.ts
-  │   ├── gallery.ts
-  │   ├── testimonial.ts
-  │   ├── aboutPage.ts
-  │   ├── faq.ts
-  │   ├── contactInfo.ts
-  │   └── formSubmission.ts
-  └── objects/
-      ├── hero.ts
-      ├── features.ts
-      ├── featureItem.ts
-      ├── whyChooseUs.ts
-      ├── offerings.ts
-      ├── offeringItem.ts
-      ├── testimonialSection.ts
-      ├── teamMember.ts
-      ├── historyItem.ts
-      ├── valueItem.ts
-      ├── dimensions.ts
-      └── socialLink.ts
-```
-
-## Document Schemas
-
-### Category Schema (category.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'category',
-  title: 'Categories',
-  type: 'document',
-  fields: [
-    defineField({
-      name: 'name',
-      title: 'Name',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'name',
-        maxLength: 96,
-      },
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-      rows: 3,
-    }),
-  ],
-})
-```
-
-### Product Schema (product.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'product',
-  title: 'Products',
-  type: 'document',
-  fields: [
-    defineField({
-      name: 'name',
-      title: 'Name',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: {
-        source: 'name',
-        maxLength: 96,
-      },
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'mainImage',
-      title: 'Main Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'gallery',
-      title: 'Gallery',
-      type: 'array',
-      of: [{ type: 'image', options: { hotspot: true } }],
-    }),
-    defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'reference',
-      to: [{ type: 'category' }],
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'price',
-      title: 'Price',
-      type: 'number',
-      validation: Rule => Rule.required().precision(2).positive(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-      rows: 4,
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'features',
-      title: 'Features',
-      type: 'array',
-      of: [{ type: 'string' }],
-      validation: Rule => Rule.required().min(1),
-    }),
-    defineField({
-      name: 'materials',
-      title: 'Materials',
-      type: 'array',
-      of: [{ type: 'string' }],
-      validation: Rule => Rule.required().min(1),
-    }),
-    defineField({
-      name: 'dimensions',
-      title: 'Dimensions',
-      type: 'dimensions',
-    }),
-    defineField({
-      name: 'inStock',
-      title: 'In Stock',
-      type: 'boolean',
-      initialValue: true,
-    }),
-    defineField({
-      name: 'seoDescription',
-      title: 'SEO Description',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'relatedProducts',
-      title: 'Related Products',
-      type: 'array',
-      of: [
-        {
-          type: 'reference',
-          to: [{ type: 'product' }],
-        },
-      ],
-      validation: Rule => Rule.unique(),
-    }),
-  ],
-  preview: {
-    select: {
-      title: 'name',
-      subtitle: 'category.name',
-      media: 'mainImage',
-    },
-  },
-})
-```
-
-### Home Page Schema (homePage.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'homePage',
-  title: 'Home Page',
-  type: 'document',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Page Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'seoDescription',
-      title: 'SEO Description',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'hero',
-      title: 'Hero Section',
-      type: 'hero',
-    }),
-    defineField({
-      name: 'featuredProducts',
-      title: 'Featured Products',
-      type: 'array',
-      of: [
-        {
-          type: 'reference',
-          to: [{ type: 'product' }],
-        },
-      ],
-      validation: Rule => Rule.unique().max(4),
-    }),
-    defineField({
-      name: 'whyChooseUs',
-      title: 'Why Choose Us Section',
-      type: 'whyChooseUs',
-    }),
-    defineField({
-      name: 'features',
-      title: 'Features Section',
-      type: 'features',
-    }),
-    defineField({
-      name: 'offerings',
-      title: 'Offerings Section',
-      type: 'offerings',
-    }),
-    defineField({
-      name: 'testimonialSection',
-      title: 'Testimonial Section',
-      type: 'testimonialSection',
-    }),
-  ],
-  preview: {
-    select: {
-      title: 'title',
-    },
-    prepare({ title }) {
-      return {
-        title: title || 'Home Page',
-      }
-    },
-  },
-})
-```
-
-### Gallery Schema (gallery.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'gallery',
-  title: 'Gallery',
-  type: 'document',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-      rows: 2,
-    }),
-    defineField({
-      name: 'image',
-      title: 'Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'reference',
-      to: [{ type: 'category' }],
-    }),
-    defineField({
-      name: 'publishedAt',
-      title: 'Published At',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
-    }),
-  ],
-  preview: {
-    select: {
-      title: 'title',
-      subtitle: 'category.name',
-      media: 'image',
-    },
-  },
-})
-```
-
-### Testimonial Schema (testimonial.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'testimonial',
-  title: 'Testimonials',
-  type: 'document',
-  fields: [
-    defineField({
-      name: 'quote',
-      title: 'Quote',
-      type: 'text',
-      rows: 4,
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'author',
-      title: 'Author',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'location',
-      title: 'Location',
-      type: 'string',
-    }),
-    defineField({
-      name: 'rating',
-      title: 'Rating (1-5)',
-      type: 'number',
-      validation: Rule => Rule.required().min(1).max(5).precision(1),
-    }),
-    defineField({
-      name: 'image',
-      title: 'Author Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-    }),
-    defineField({
-      name: 'publishedAt',
-      title: 'Published At',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
-    }),
-  ],
-  preview: {
-    select: {
-      title: 'author',
-      subtitle: 'quote',
-      media: 'image',
-    },
-    prepare({ title, subtitle, media }) {
-      return {
-        title,
-        subtitle: subtitle?.substring(0, 50) + '...',
-        media,
-      }
-    },
-  },
-})
-```
-
-### About Page Schema (aboutPage.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'aboutPage',
-  title: 'About Page',
-  type: 'document',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Page Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'introduction',
-      title: 'Introduction',
-      type: 'text',
-      rows: 4,
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'mission',
-      title: 'Mission Statement',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'image',
-      title: 'About Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-    }),
-    defineField({
-      name: 'history',
-      title: 'Company History',
-      type: 'array',
-      of: [{ type: 'historyItem' }],
-    }),
-    defineField({
-      name: 'team',
-      title: 'Team Members',
-      type: 'array',
-      of: [{ type: 'teamMember' }],
-    }),
-    defineField({
-      name: 'values',
-      title: 'Company Values',
-      type: 'array',
-      of: [{ type: 'valueItem' }],
-    }),
-  ],
-  preview: {
-    select: {
-      title: 'title',
-    },
-    prepare({ title }) {
-      return {
-        title: title || 'About Page',
-      }
-    },
-  },
-})
-```
-
-### FAQ Schema (faq.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'faq',
-  title: 'FAQs',
-  type: 'document',
-  fields: [
-    defineField({
-      name: 'question',
-      title: 'Question',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'answer',
-      title: 'Answer',
-      type: 'text',
-      rows: 4,
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Products', value: 'products' },
-          { title: 'Installation', value: 'installation' },
-          { title: 'Warranty', value: 'warranty' },
-          { title: 'Pricing', value: 'pricing' },
-          { title: 'Other', value: 'other' },
-        ],
-      },
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'order',
-      title: 'Display Order',
-      type: 'number',
-      initialValue: 0,
-    }),
-  ],
-  preview: {
-    select: {
-      title: 'question',
-      subtitle: 'category',
-    },
-  },
-})
-```
-
-### Contact Info Schema (contactInfo.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'contactInfo',
-  title: 'Contact Information',
-  type: 'document',
-  fields: [
-    defineField({
-      name: 'address',
-      title: 'Address',
-      type: 'text',
-      rows: 3,
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'phone',
-      title: 'Phone Number',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'email',
-      title: 'Email Address',
-      type: 'string',
-      validation: Rule => Rule.required().email(),
-    }),
-    defineField({
-      name: 'hours',
-      title: 'Business Hours',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'mapLocation',
-      title: 'Map Location',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'lat',
-          title: 'Latitude',
-          type: 'number',
-        }),
-        defineField({
-          name: 'lng',
-          title: 'Longitude',
-          type: 'number',
-        }),
-      ],
-    }),
-    defineField({
-      name: 'socialLinks',
-      title: 'Social Media Links',
-      type: 'array',
-      of: [{ type: 'socialLink' }],
-    }),
-  ],
-  preview: {
-    select: {
-      title: 'email',
-      subtitle: 'phone',
-    },
-    prepare({ title, subtitle }) {
-      return {
-        title: 'Contact Information',
-        subtitle: `${subtitle} | ${title}`,
-      }
-    },
-  },
-})
-```
-
-### Form Submission Schema (formSubmission.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'formSubmission',
-  title: 'Form Submissions',
-  type: 'document',
-  fields: [
-    defineField({
-      name: 'name',
-      title: 'Name',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'email',
-      title: 'Email',
-      type: 'string',
-      validation: Rule => Rule.required().email(),
-    }),
-    defineField({
-      name: 'phone',
-      title: 'Phone',
-      type: 'string',
-    }),
-    defineField({
-      name: 'message',
-      title: 'Message',
-      type: 'text',
-      rows: 4,
-    }),
-    defineField({
-      name: 'formType',
-      title: 'Form Type',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Quote Request', value: 'quote' },
-          { title: 'Contact Form', value: 'contact' },
-          { title: 'Testimonial Submission', value: 'testimonial' },
-        ],
-      },
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'productInterest',
-      title: 'Product Interest',
-      type: 'string',
-    }),
-    defineField({
-      name: 'createdAt',
-      title: 'Created At',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
-      readOnly: true,
-    }),
-    defineField({
-      name: 'status',
-      title: 'Status',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'New', value: 'new' },
-          { title: 'Contacted', value: 'contacted' },
-          { title: 'Completed', value: 'completed' },
-        ],
-      },
-      initialValue: 'new',
-    }),
-  ],
-  preview: {
-    select: {
-      title: 'name',
-      subtitle: 'formType',
-      date: 'createdAt',
-    },
-    prepare({ title, subtitle, date }) {
-      return {
-        title,
-        subtitle: `${subtitle} - ${new Date(date).toLocaleDateString()}`,
-      }
-    },
-  },
-  orderings: [
-    {
-      title: 'Created At',
-      name: 'createdAtDesc',
-      by: [{ field: 'createdAt', direction: 'desc' }],
-    },
-  ],
-})
-```
-
-## Object Schemas
-
-### Hero Object (hero.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'hero',
-  title: 'Hero Section',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'text',
-      rows: 2,
-    }),
-    defineField({
-      name: 'backgroundImage',
-      title: 'Background Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-    }),
-    defineField({
-      name: 'backgroundVideo',
-      title: 'Background Video',
-      type: 'file',
-      options: {
-        accept: 'video/*',
-      },
-    }),
-    defineField({
-      name: 'buttonPrimary',
-      title: 'Primary Button Text',
-      type: 'string',
-    }),
-    defineField({
-      name: 'buttonPrimaryLink',
-      title: 'Primary Button Link',
-      type: 'string',
-    }),
-    defineField({
-      name: 'buttonSecondary',
-      title: 'Secondary Button Text',
-      type: 'string',
-    }),
-    defineField({
-      name: 'buttonSecondaryLink',
-      title: 'Secondary Button Link',
-      type: 'string',
-    }),
-  ],
-})
-```
-
-### Why Choose Us Object (whyChooseUs.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'whyChooseUs',
-  title: 'Why Choose Us Section',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'text',
-      rows: 2,
-    }),
-    defineField({
-      name: 'features',
-      title: 'Features',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'title',
-              title: 'Title',
-              type: 'string',
-              validation: Rule => Rule.required(),
-            }),
-            defineField({
-              name: 'description',
-              title: 'Description',
-              type: 'text',
-              rows: 2,
-              validation: Rule => Rule.required(),
-            }),
-            defineField({
-              name: 'icon',
-              title: 'Icon SVG Path',
-              type: 'string',
-              description: 'SVG path data for the icon',
-            }),
-          ],
-        },
-      ],
-      validation: Rule => Rule.required().min(1),
-    }),
-  ],
-})
-```
-
-### Features Object (features.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'features',
-  title: 'Features Section',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'text',
-      rows: 2,
-    }),
-    defineField({
-      name: 'featureItems',
-      title: 'Feature Items',
-      type: 'array',
-      of: [{ type: 'featureItem' }],
-      validation: Rule => Rule.required().min(1),
-    }),
-  ],
-})
-```
-
-### Feature Item Object (featureItem.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'featureItem',
-  title: 'Feature Item',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-      rows: 2,
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'icon',
-      title: 'Icon SVG Path',
-      type: 'string',
-      description: 'SVG path data for the icon',
-    }),
-    defineField({
-      name: 'link',
-      title: 'Link URL',
-      type: 'string',
-    }),
-    defineField({
-      name: 'linkText',
-      title: 'Link Text',
-      type: 'string',
-    }),
-  ],
-})
-```
-
-### Offerings Object (offerings.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'offerings',
-  title: 'Offerings Section',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'image',
-      title: 'Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-    }),
-    defineField({
-      name: 'items',
-      title: 'Offering Items',
-      type: 'array',
-      of: [{ type: 'offeringItem' }],
-      validation: Rule => Rule.required().min(1),
-    }),
-  ],
-})
-```
-
-### Offering Item Object (offeringItem.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'offeringItem',
-  title: 'Offering Item',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-  ],
-})
-```
-
-### Testimonial Section Object (testimonialSection.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'testimonialSection',
-  title: 'Testimonial Section',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'text',
-      rows: 2,
-    }),
-    defineField({
-      name: 'displayCount',
-      title: 'Number of Testimonials to Display',
-      type: 'number',
-      initialValue: 3,
-      validation: Rule => Rule.required().integer().positive(),
-    }),
-  ],
-})
-```
-
-### Team Member Object (teamMember.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'teamMember',
-  title: 'Team Member',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'name',
-      title: 'Name',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'position',
-      title: 'Position',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'image',
-      title: 'Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-    }),
-    defineField({
-      name: 'bio',
-      title: 'Bio',
-      type: 'text',
-      rows: 3,
-    }),
-  ],
-})
-```
-
-### History Item Object (historyItem.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'historyItem',
-  title: 'History Item',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'year',
-      title: 'Year',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-      rows: 2,
-    }),
-  ],
-})
-```
-
-### Value Item Object (valueItem.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'valueItem',
-  title: 'Value Item',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-      rows: 2,
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'icon',
-      title: 'Icon SVG Path',
-      type: 'string',
-      description: 'SVG path data for the icon',
-    }),
-  ],
-})
-```
-
-### Dimensions Object (dimensions.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'dimensions',
-  title: 'Dimensions',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'width',
-      title: 'Width',
-      type: 'number',
-      validation: Rule => Rule.required().positive(),
-    }),
-    defineField({
-      name: 'height',
-      title: 'Height',
-      type: 'number',
-      validation: Rule => Rule.required().positive(),
-    }),
-    defineField({
-      name: 'unit',
-      title: 'Unit',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Inches', value: 'in' },
-          { title: 'Centimeters', value: 'cm' },
-        ],
-      },
-      initialValue: 'in',
-      validation: Rule => Rule.required(),
-    }),
-  ],
-})
-```
-
-### Social Link Object (socialLink.ts)
-
-```typescript
-import { defineField, defineType } from 'sanity'
-
-export default defineType({
-  name: 'socialLink',
-  title: 'Social Link',
-  type: 'object',
-  fields: [
-    defineField({
-      name: 'platform',
-      title: 'Platform',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Facebook', value: 'facebook' },
-          { title: 'Instagram', value: 'instagram' },
-          { title: 'Twitter', value: 'twitter' },
-          { title: 'LinkedIn', value: 'linkedin' },
-          { title: 'YouTube', value: 'youtube' },
-          { title: 'Pinterest', value: 'pinterest' },
-          { title: 'Houzz', value: 'houzz' },
-        ],
-      },
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'url',
-      title: 'URL',
-      type: 'url',
-      validation: Rule => Rule.required(),
-    }),
-  ],
-})
-```
-
-## Next Steps
-
-1. After creating all schema files, start your Sanity Studio and create initial content:
-   - Categories for windows and doors
-   - Products (at least 4-6 featured products)
-   - Home page configuration with all sections
-   - Gallery items
-   - Testimonials
-   - About page content
-   - FAQs
-   - Contact information
-
-2. Deploy your Sanity Studio:
-```bash
-npm run deploy
-```
-
-3. Get your Sanity project ID and dataset name to configure your Next.js application.
-
-4. Create environment variables in your Next.js project:
-```
-NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id
-NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_ADMIN_PASSWORD=your-password-for-submissions-page
-```
-
-This setup provides a complete content management system for your Cali Door & Window website, allowing you to manage all website content through Sanity Studio. 
+---
+
+## Implementation Details
+
+### Mobile Optimizations
+
+The schema includes specific features to optimize mobile experiences:
+
+1. **Mobile-First Layout Control**:
+   - The `mobileLayout` field in the `Hero` schema allows content managers to control whether images or text appear first on mobile devices
+   - Options include 'imageFirst' (default) or 'textFirst'
+
+2. **Mobile-Specific Images**:
+   - The `SliderItem` schema includes a `mobileImage` field for optimized mobile images
+   - When provided, these images replace the standard images on mobile devices, improving load times and visual experience
+
+3. **Responsive Text Positioning**:
+   - The `textPosition` field in `SliderItem` allows content managers to position text left, center, or right
+
+### Gallery Zoom Functionality
+
+The gallery implements a zoom feature for detailed image viewing:
+
+1. **High-Resolution Images**:
+   - The `fullSizeImage` field in the `Gallery` schema allows for dedicated high-resolution images for zoom views
+   - If not provided, the system falls back to the standard image
+
+2. **Project Details Display**:
+   - When zoomed, the gallery displays additional project details from the `projectDetails` array
+   - Each detail consists of a label/value pair for specifications like dimensions, materials, etc.
+
+### Connected Content
+
+The schema implements several cross-references between content types:
+
+1. **Products and Categories**:
+   - Products reference categories for organization
+   - The homepage references up to 6 featured products
+
+2. **Gallery and Products**:
+   - Gallery items can reference the products used in each project
+   - This creates a bidirectional navigation between the portfolio and product catalog
+
+3. **Service Areas**:
+   - Service areas are referenced from both homepage and about page
+   - This creates a consistent representation of the company's service territory
+
+---
+
+## Usage Examples
+
+### Creating a New Product
+
+1. Go to the "Products" section in Sanity Studio
+2. Click "Create new Product"
+3. Fill in the required fields:
+   - Name
+   - Slug (generated from name)
+   - Main Image
+   - Category (select from existing categories)
+   - Price
+   - Description
+   - At least one feature
+   - At least one material
+   - Dimensions
+4. Optionally add:
+   - Additional gallery images
+   - SEO description
+   - Related products
+
+### Setting Up the Homepage Hero
+
+1. Go to the "Home Page" section in Sanity Studio
+2. Configure the Hero section:
+   - Add a title and subtitle
+   - Set the mobile layout preference (imageFirst or textFirst)
+   - Set the overlay opacity (0-100)
+   - Add primary and secondary buttons with links
+   - Add slider items with:
+     - Desktop image
+     - Optional mobile-specific image
+     - Alt text
+     - Label and description
+     - Optional button with link
+     - Text position preference (left, center, right)
+
+### Creating Gallery Items with Zoom Support
+
+1. Go to the "Gallery" section in Sanity Studio
+2. Create new gallery items with:
+   - Title
+   - Description
+   - Main image (standard resolution)
+   - Full-size image for zoom view (high resolution)
+   - Project details:
+     - Add label/value pairs like "Material: Aluminum", "Style: Modern"
+   - Select a category
+   - Toggle featured status if it should be highlighted
+   - Add related products that were used in the project
+
+### Managing Team Members in About Page
+
+1. Go to the "About Page" section in Sanity Studio
+2. Scroll to the "Team Members" section
+3. Add team members with:
+   - Name
+   - Position/title
+   - Biography
+   - Photo
+4. Arrange the order of team members using drag-and-drop
+
+### Creating Service Areas
+
+1. Go to the "Service Areas" section in Sanity Studio
+2. Add service areas with:
+   - Name
+   - Slug
+   - Description
+   - Representative image
+   - ZIP codes served (for filtering/search functionality)
+   - Toggle featured status for priority areas
+
+This schema structure provides a comprehensive content management solution for the Cali Door & Window website, with special emphasis on mobile optimization, image presentation, and interconnected content. 

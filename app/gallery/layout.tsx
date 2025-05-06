@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Gallery | Cali Door & Window',
-  description: 'View our portfolio of completed door and window installation projects. Get inspired for your own home.',
+  description: 'Explore our portfolio of completed door and window projects and get inspired for your next home improvement.',
 };
 
 export default function GalleryLayout({

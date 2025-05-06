@@ -24,6 +24,27 @@ export default defineType({
       validation: Rule => Rule.required().min(1),
     }),
     defineField({
+      name: 'mobileLayout',
+      title: 'Mobile Layout',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Image First', value: 'imageFirst' },
+          { title: 'Text First', value: 'textFirst' },
+        ],
+      },
+      initialValue: 'imageFirst',
+      description: 'Choose whether to show the image or text first on mobile devices',
+    }),
+    defineField({
+      name: 'overlayOpacity',
+      title: 'Overlay Opacity',
+      type: 'number',
+      description: 'Set the opacity of the dark overlay on slider images (0-100)',
+      validation: Rule => Rule.min(0).max(100),
+      initialValue: 40,
+    }),
+    defineField({
       name: 'buttonPrimary',
       title: 'Primary Button Text',
       type: 'string',

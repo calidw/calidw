@@ -16,7 +16,7 @@ type ProductGridProps = {
 
 export default function ProductGrid({
   products,
-  showPrice = true,
+  showPrice = false,
   featuredOnly = false,
   maxProducts,
   title = "Featured Products",
@@ -32,7 +32,7 @@ export default function ProductGrid({
     
     if (featuredOnly) {
       filtered = filtered.filter(product => 
-        product.features.some(feature => 
+        product.features?.some(feature => 
           feature.toLowerCase().includes('title 24') || 
           feature.toLowerCase().includes('energy efficient')
         )
@@ -70,8 +70,8 @@ export default function ProductGrid({
               onClick={() => setActiveCategory(category)}
               className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeCategory === category
-                  ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-md transform hover:scale-105'
-                  : 'bg-white text-slate-700 border border-slate-200 hover:border-amber-300 hover:text-amber-600 hover:shadow-sm'
+                  ? 'bg-gradient-to-r from-red-800 to-red-700 text-white shadow-md transform hover:scale-105'
+                  : 'bg-white text-slate-700 border border-slate-200 hover:border-red-300 hover:text-red-800 hover:shadow-sm'
               }`}
             >
               {category}

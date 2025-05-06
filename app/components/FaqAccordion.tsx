@@ -31,7 +31,7 @@ export default function FaqAccordion({ items }: FaqAccordionProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
             className={`overflow-hidden rounded-xl bg-white shadow-sm border border-slate-100 ${
-              isOpen ? 'ring-1 ring-amber-500 shadow-md' : 'hover:shadow-md transition-shadow'
+              isOpen ? 'ring-1 ring-red-500 shadow-md' : 'hover:shadow-md transition-shadow'
             }`}
           >
             <h2 id={`faq-question-${index}`}>
@@ -43,7 +43,7 @@ export default function FaqAccordion({ items }: FaqAccordionProps) {
                 aria-controls={`faq-content-${index}`}
               >
                 <span className="text-base md:text-lg">{item.question}</span>
-                <div className={`relative ml-4 flex-shrink-0 ${isOpen ? 'text-amber-500' : 'text-slate-400'}`}>
+                <div className={`relative ml-4 flex-shrink-0 ${isOpen ? 'text-red-500' : 'text-slate-400'}`}>
                   <div className="h-6 w-6 rounded-full border-2 border-current flex items-center justify-center">
                     <motion.span 
                       animate={{ rotate: isOpen ? 90 : 0 }}

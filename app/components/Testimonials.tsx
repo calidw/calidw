@@ -24,37 +24,49 @@ const staggerContainer = {
   }
 };
 
-// Mock testimonial data
-interface Testimonial {
-  id: string;
+// Testimonial interface aligned with Sanity schema
+export interface Testimonial {
+  _id: string;
+  name: string;
+  location?: string;
   quote: string;
-  author: string;
-  location?: string; // Optional location
-  rating?: number; // Optional rating (e.g., 1-5)
-  image?: string; // New optional image URL property
+  rating?: number;
+  image?: string;
+  projectType?: string;
+  date?: string;
+  isFeatured?: boolean;
+  productReference?: {
+    _id: string;
+    name: string;
+    slug: string;
+  };
 }
 
+// Fallback mock testimonials in case no data is provided
 const mockTestimonials: Testimonial[] = [
   {
-    id: 'test-001',
+    _id: 'test-001',
     quote: 'Cali Door & Window transformed our home! The new windows are stunning and energy-efficient. The installation team was professional and meticulous.',
-    author: 'Sarah & Tom P.',
+    name: 'Sarah & Tom P.',
     location: 'Pasadena, CA',
     rating: 5,
     image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150&h=150&auto=format&fit=crop',
+    projectType: 'windows',
+    date: 'January 2023',
+    isFeatured: true
   },
   {
-    id: 'test-002',
+    _id: 'test-002',
     quote: 'From the initial consultation to the final walkthrough, the experience was seamless. Our new entry door is the centerpiece of our facade.',
-    author: 'Michael R.',
+    name: 'Michael R.',
     location: 'Glendale, CA',
     rating: 5,
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&h=150&auto=format&fit=crop',
   },
   {
-    id: 'test-003',
+    _id: 'test-003',
     quote: 'We were impressed with the quality of the windows and the knowledge of the sales team. Installation was quick and clean. Highly recommend!',
-    author: 'Jennifer L.',
+    name: 'Jennifer L.',
     location: 'Burbank, CA',
     rating: 4,
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&h=150&auto=format&fit=crop',
@@ -62,7 +74,7 @@ const mockTestimonials: Testimonial[] = [
 ];
 
 interface TestimonialsProps {
-  testimonials?: Testimonial[]; // Allow passing testimonials or use mock data
+  testimonials?: Testimonial[] | null; // Allow passing testimonials or use mock data, including null
   maxItems?: number; // Optionally limit the number displayed
   title?: string;
   subtitle?: string;
@@ -71,7 +83,7 @@ interface TestimonialsProps {
 // Star rating component (optional)
 const StarRating = ({ rating }: { rating: number }) => {
   return (
-    <div className="flex text-amber-500 mb-4">
+    <div className="flex text-red-500 mb-4">
       {[...Array(5)].map((_, i) => (
         <svg
           key={i}
@@ -91,11 +103,12 @@ const Testimonials = ({
   title = "What Our Clients Say",
   subtitle = "Real feedback from satisfied homeowners and partners."
 }: TestimonialsProps) => {
-
-  const itemsToDisplay = maxItems ? testimonials.slice(0, maxItems) : testimonials;
+  // Ensure testimonials is always an array, even if null is passed
+  const safeTestimonials = testimonials || mockTestimonials;
+  const itemsToDisplay = maxItems ? safeTestimonials.slice(0, maxItems) : safeTestimonials;
 
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-b from-white to-slate-50 overflow-hidden">
+    <section className="py-20 md:py-28 bg-gradient-to-b from-white to-red-50 overflow-hidden">
       <div className="container mx-auto px-6 lg:px-8">
         <MotionDiv 
           initial="hidden"
@@ -106,7 +119,7 @@ const Testimonials = ({
           className="relative mb-16 md:mb-20 max-w-xl mx-auto text-center"
         >
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="h-40 w-40 rounded-full bg-amber-100 blur-3xl opacity-30"></div>
+            <div className="h-40 w-40 rounded-full bg-red-100 blur-3xl opacity-30"></div>
           </div>
           <h2 className="relative text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 mb-6">
             {title}
@@ -125,7 +138,7 @@ const Testimonials = ({
         >
           {itemsToDisplay.map((testimonial) => (
             <MotionDiv
-              key={testimonial.id}
+              key={testimonial._id}
               variants={fadeInUp}
               className="h-full"
             >
@@ -135,9 +148,12 @@ const Testimonials = ({
                 className="h-full bg-white rounded-xl p-8 border border-slate-100 shadow-sm flex flex-col relative overflow-hidden"
               >
                 {/* Decorative accent */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-500 to-amber-400"></div>
+                <div className="absolute top-0 left-0 w-full h-full opacity-25">
+                  <div className="absolute top-0 right-0 w-80 h-80 bg-red-100 rounded-full blur-3xl -z-10"></div>
+                  <div className="absolute bottom-0 left-0 w-80 h-80 bg-slate-100 rounded-full blur-3xl -z-10"></div>
+                </div>
                 
-                <svg className="h-8 w-8 text-amber-300 mb-4" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
+                <svg className="h-8 w-8 text-red-300 mb-4" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
                   <path d="M9.333 7h-5.333v8h5.333v8l8-8v-8h-8v-8zM25.333 7h-5.333v8h5.333v8l8-8v-8h-8v-8z"></path>
                 </svg>
                 
@@ -151,18 +167,18 @@ const Testimonials = ({
                   {testimonial.image ? (
                     <Image 
                       src={testimonial.image} 
-                      alt={`${testimonial.author}`}
+                      alt={`${testimonial.name}`}
                       width={40}
                       height={40}
                       className="rounded-full object-cover mr-3"
                     />
                   ) : (
                     <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 rounded-full flex items-center justify-center text-white mr-3 text-xl font-bold">
-                      {testimonial.author.charAt(0)}
+                      {testimonial.name.charAt(0)}
                     </div>
                   )}
                   <div>
-                    <p className="font-semibold text-slate-900">{testimonial.author}</p>
+                    <p className="font-semibold text-slate-900">{testimonial.name}</p>
                     {testimonial.location && (
                       <p className="text-sm text-slate-500">{testimonial.location}</p>
                     )}
@@ -173,7 +189,7 @@ const Testimonials = ({
           ))}
         </MotionDiv>
         
-        {maxItems && testimonials.length > maxItems && (
+        {maxItems && testimonials && testimonials.length > maxItems && (
           <MotionDiv 
             initial="hidden"
             whileInView="visible"

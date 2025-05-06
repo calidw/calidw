@@ -22,74 +22,82 @@ export async function getHomePageData() {
   return sanityClient.fetch(`
     *[_type == "homePage"][0]{
       title,
-      hero {
-        title,
-        subtitle,
-        sliderItems[]{
+      heroBanner {
+        headline,
+        subheadline,
+        sliderImages[]{
           "image": image.asset->url,
           alt,
-          label,
-          description
+          caption
         },
-        buttonPrimary,
-        buttonPrimaryLink,
-        buttonSecondary,
-        buttonSecondaryLink
-      },
-      featuredProducts[]->{
-        _id,
-        name,
-        slug,
-        price,
-        description,
-        "imageUrl": mainImage.asset->url,
-        category->{name, slug},
-        features,
-        materials,
-        dimensions,
-        inStock
+        ctaText,
+        ctaLink
       },
       whyChooseUs {
-        title,
-        subtitle,
+        heading,
+        subheading,
         features[]{
           title,
           description,
           icon
         }
       },
-      features {
-        title,
-        subtitle,
-        featureItems[]{
+      doorsWindowsSection {
+        heading,
+        subheading,
+        doorCard {
+          "image": image.asset->url,
           title,
           description,
-          icon,
-          link,
-          linkText
+          linkText,
+          link
+        },
+        windowCard {
+          "image": image.asset->url,
+          title,
+          description,
+          linkText,
+          link
         }
       },
-      offerings {
-        title,
-        description,
-        "image": image.asset->url,
-        items[]{
-          title, 
-          description
-        }
+      gallerySection {
+        heading,
+        subheading,
+        featuredGalleryItems[]->{
+          _id,
+          title,
+          description,
+          "image": image.asset->url,
+          "fullSizeImage": fullSizeImage.asset->url,
+          category->{
+            name,
+            "slug": slug.current
+          },
+          projectDetails[]{
+            label,
+            value
+          },
+          isFeatured
+        },
+        ctaText,
+        ctaLink
       },
-      testimonialSection {
-        title,
-        subtitle,
-        displayCount
-      },
-      serviceAreas[]->{
+      testimonialsSectionHeading,
+      testimonialsSectionSubheading,
+      featuredTestimonials[]->{
         _id,
         name,
-        slug,
-        description,
+        location,
+        quote,
+        rating,
         "image": image.asset->url,
-        featured
+        projectType,
+        date
+      },
+      mapSection {
+        heading,
+        subheading,
+        mapEmbedUrl
       }
     }
   `);
@@ -100,15 +108,13 @@ export async function getAllProducts() {
     *[_type == "product"] | order(name asc) {
       _id,
       name,
-      slug,
-      price,
+      "slug": slug.current,
       description,
-      "imageUrl": mainImage.asset->url,
-      category->{name, slug},
-      features,
-      materials,
-      dimensions,
-      inStock
+      "imageUrl": image.asset->url,
+      category,
+      inStock,
+      titleTwentyFourCompliant,
+      isFeatured
     }
   `);
 }
@@ -118,50 +124,55 @@ export async function getProductBySlug(slug: string) {
     *[_type == "product" && slug.current == $slug][0]{
       _id,
       name,
-      slug,
-      price,
+      "slug": slug.current,
       description,
-      "imageUrl": mainImage.asset->url,
+      "imageUrl": image.asset->url,
       "gallery": gallery[].asset->url,
-      category->{name, slug},
-      features,
-      materials,
-      dimensions,
+      category,
       inStock,
-      seoDescription,
-      "relatedProducts": relatedProducts[]->{
-        _id,
-        name,
-        slug,
-        "imageUrl": mainImage.asset->url,
-        price,
-        category->{name}
-      }
+      titleTwentyFourCompliant,
+      seo
     }
   `, { slug });
 }
 
 export async function getAllTestimonials(limit?: number) {
   let query = `
-    *[_type == "testimonial"] | order(publishedAt desc) {
+    *[_type == "testimonial"] | order(orderBy asc) {
       _id,
-      quote,
-      author,
+      name,
       location,
+      quote,
       rating,
-      "image": image.asset->url
+      "image": image.asset->url,
+      projectType,
+      date,
+      isFeatured,
+      productReference->{
+        _id,
+        name,
+        "slug": slug.current
+      }
     }
   `;
 
   if (limit) {
     query = `
-      *[_type == "testimonial"] | order(publishedAt desc)[0...$limit] {
+      *[_type == "testimonial"] | order(orderBy asc)[0...$limit] {
         _id,
-        quote,
-        author,
+        name,
         location,
+        quote,
         rating,
-        "image": image.asset->url
+        "image": image.asset->url,
+        projectType,
+        date,
+        isFeatured,
+        productReference->{
+          _id,
+          name,
+          "slug": slug.current
+        }
       }
     `;
   }
@@ -171,103 +182,114 @@ export async function getAllTestimonials(limit?: number) {
 
 export async function getGalleryItems() {
   return sanityClient.fetch(`
-    *[_type == "gallery"] | order(publishedAt desc) {
+    *[_type == "galleryItem"] | order(orderBy asc) {
       _id,
       title,
       description,
       "image": image.asset->url,
-      category->{name},
-      featured,
+      "fullSizeImage": fullSizeImage.asset->url,
+      category->{name, "slug": slug.current},
+      projectDetails[]{
+        label,
+        value
+      },
+      relatedProducts[]->{
+        _id,
+        name,
+        "slug": slug.current,
+        "imageUrl": image.asset->url
+      },
+      isFeatured,
       publishedAt
     }
   `);
+}
+
+export async function getAllCategories() {
+  return sanityClient.fetch(`
+    *[_type == "category"] | order(orderBy asc) {
+      _id,
+      name,
+      "slug": slug.current,
+      description,
+      parentCategory->{
+        _id,
+        name,
+        "slug": slug.current
+      },
+      "image": image.asset->url,
+      icon
+    }
+  `);
+}
+
+export async function getCategoryBySlug(slug: string) {
+  return sanityClient.fetch(`
+    *[_type == "category" && slug.current == $slug][0]{
+      _id,
+      name,
+      "slug": slug.current,
+      description,
+      parentCategory->{
+        _id,
+        name,
+        "slug": slug.current
+      },
+      "image": image.asset->url,
+      icon
+    }
+  `, { slug });
 }
 
 export async function getAboutPageData() {
   return sanityClient.fetch(`
     *[_type == "aboutPage"][0]{
       title,
-      introduction,
-      mission,
-      "image": image.asset->url,
-      history[]{
-        year,
+      heroSection {
+        heading,
+        subheading,
+        blurIntensity
+      },
+      storySection {
+        heading,
+        content,
+        "image": image.asset->url
+      },
+      values[] {
         title,
+        description,
+        iconName
+      },
+      serviceAreas[] {
+        name,
         description
       },
-      values[]{
-        title,
-        description,
-        icon
-      }
+      expertise {
+        windowSpecializations,
+        doorSpecializations
+      },
+      seo
     }
   `);
 }
 
-export async function getFaqItems() {
+export async function getFaqPageData() {
   return sanityClient.fetch(`
-    *[_type == "faq"] | order(order asc) {
-      _id,
-      question,
-      answer,
-      category
+    *[_type == "faqPage"][0]{
+      title,
+      heading,
+      subheading,
+      faqs[]{
+        question,
+        answer,
+        category,
+        orderRank
+      },
+      ctaTitle,
+      ctaText,
+      ctaButtonText,
+      ctaButtonLink,
+      seo
     }
   `);
-}
-
-export async function getContactInfo() {
-  return sanityClient.fetch(`
-    *[_type == "contactInfo"][0]{
-      address,
-      phone,
-      email,
-      hours,
-      mapLocation,
-      socialLinks
-    }
-  `);
-}
-
-export async function getServiceAreas(featured?: boolean) {
-  let query = `
-    *[_type == "serviceArea"] | order(name asc) {
-      _id,
-      name,
-      slug,
-      description,
-      "image": image.asset->url,
-      zipCodes,
-      featured
-    }
-  `;
-
-  if (featured) {
-    query = `
-      *[_type == "serviceArea" && featured == true] | order(name asc) {
-        _id,
-        name,
-        slug,
-        description,
-        "image": image.asset->url,
-        zipCodes,
-        featured
-      }
-    `;
-  }
-
-  return sanityClient.fetch(query);
-}
-
-export async function getServiceAreaBySlug(slug: string) {
-  return sanityClient.fetch(`
-    *[_type == "serviceArea" && slug.current == $slug][0]{
-      _id,
-      name,
-      slug,
-      description,
-      "image": image.asset->url,
-      zipCodes,
-      featured
-    }
-  `, { slug });
 } 

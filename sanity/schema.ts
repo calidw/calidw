@@ -4,26 +4,16 @@ import { type SchemaTypeDefinition } from 'sanity';
 import product from './schemas/documents/product';
 import category from './schemas/documents/category';
 import homePage from './schemas/documents/homePage';
-import gallery from './schemas/documents/gallery';
+import galleryItem from './schemas/documents/galleryItem';
 import testimonial from './schemas/documents/testimonial';
 import aboutPage from './schemas/documents/aboutPage';
+import contactPage from './schemas/documents/contactPage';
+import galleryPage from './schemas/documents/galleryPage';
+import productsPage from './schemas/documents/productsPage';
+import faqPage from './schemas/documents/faqPage';
 import faq from './schemas/documents/faq';
-import contactInfo from './schemas/documents/contactInfo';
 import serviceArea from './schemas/documents/serviceArea';
-
-// Object types
-import hero from './schemas/objects/hero';
-import features from './schemas/objects/features';
-import featureItem from './schemas/objects/featureItem';
-import whyChooseUs from './schemas/objects/whyChooseUs';
-import offerings from './schemas/objects/offerings';
-import offeringItem from './schemas/objects/offeringItem';
-import testimonialSection from './schemas/objects/testimonialSection';
-import historyItem from './schemas/objects/historyItem';
-import valueItem from './schemas/objects/valueItem';
-import dimensions from './schemas/objects/dimensions';
-import socialLink from './schemas/objects/socialLink';
-import sliderItem from './schemas/objects/sliderItem';
+import contactInfo from './schemas/documents/contactInfo';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -31,25 +21,15 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     product,
     category,
     homePage,
-    gallery,
+    galleryItem,
     testimonial,
     aboutPage,
+    contactPage,
+    galleryPage,
+    productsPage,
+    faqPage,
     faq,
-    contactInfo,
     serviceArea,
-    
-    // Objects
-    hero,
-    features,
-    featureItem,
-    whyChooseUs,
-    offerings,
-    offeringItem,
-    testimonialSection,
-    historyItem,
-    valueItem,
-    dimensions,
-    socialLink,
-    sliderItem,
+    contactInfo,
   ],
 }; 

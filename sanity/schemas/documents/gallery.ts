@@ -27,6 +27,46 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'fullSizeImage',
+      title: 'Full Size Image for Zoom View',
+      description: 'Optional high-resolution image for zoom view. If not provided, the main image will be used.',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
+      name: 'projectDetails',
+      title: 'Project Details',
+      description: 'Additional details about this project or installation',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              validation: Rule => Rule.required(),
+            }),
+            defineField({
+              name: 'value',
+              title: 'Value',
+              type: 'string',
+              validation: Rule => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'label',
+              subtitle: 'value',
+            },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: 'category',
       title: 'Category',
       type: 'reference',
@@ -38,6 +78,18 @@ export default defineType({
       type: 'boolean',
       initialValue: false,
       description: 'Display this image prominently in the gallery',
+    }),
+    defineField({
+      name: 'relatedProducts',
+      title: 'Related Products',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'product' }],
+        },
+      ],
+      validation: Rule => Rule.unique(),
     }),
     defineField({
       name: 'publishedAt',

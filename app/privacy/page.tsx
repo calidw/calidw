@@ -2,8 +2,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export const metadata = {
-  title: 'Privacy Policy | Cali Door & Window',
-  description: 'Learn about how Cali Door & Window collects, uses, and protects your personal information.',
+  title: 'Privacy Policy | Cali Doors and Windows',
+  description: 'Learn about how Cali Doors and Windows collects, uses, and protects your personal information.',
 };
 
 export default function PrivacyPage() {
@@ -24,7 +24,7 @@ export default function PrivacyPage() {
               </p>
               
               <p className="mb-6">
-                At Cali Door & Window, we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website, contact us, or purchase our products and services.
+                At Cali Doors and Windows, we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website, contact us, or purchase our products and services.
               </p>
               
               <h2 className="text-2xl font-semibold text-slate-800 mt-10 mb-4">1. Information We Collect</h2>

@@ -2,7 +2,7 @@ import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'product',
-  title: 'Products',
+  title: 'Product',
   type: 'document',
   fields: [
     defineField({
@@ -22,7 +22,13 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'mainImage',
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'image',
       title: 'Main Image',
       type: 'image',
       options: {
@@ -32,48 +38,21 @@ export default defineType({
     }),
     defineField({
       name: 'gallery',
-      title: 'Gallery',
+      title: 'Gallery Images',
       type: 'array',
       of: [{ type: 'image', options: { hotspot: true } }],
     }),
     defineField({
       name: 'category',
       title: 'Category',
-      type: 'reference',
-      to: [{ type: 'category' }],
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Door', value: 'door' },
+          { title: 'Window', value: 'window' },
+        ],
+      },
       validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'price',
-      title: 'Price',
-      type: 'number',
-      validation: Rule => Rule.required().precision(2).positive(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'text',
-      rows: 4,
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'features',
-      title: 'Features',
-      type: 'array',
-      of: [{ type: 'string' }],
-      validation: Rule => Rule.required().min(1),
-    }),
-    defineField({
-      name: 'materials',
-      title: 'Materials',
-      type: 'array',
-      of: [{ type: 'string' }],
-      validation: Rule => Rule.required().min(1),
-    }),
-    defineField({
-      name: 'dimensions',
-      title: 'Dimensions',
-      type: 'dimensions',
     }),
     defineField({
       name: 'inStock',
@@ -82,36 +61,32 @@ export default defineType({
       initialValue: true,
     }),
     defineField({
-      name: 'seoDescription',
-      title: 'SEO Description',
-      type: 'text',
-      rows: 3,
+      name: 'titleTwentyFourCompliant',
+      title: 'California Title 24 Compliant',
+      type: 'boolean',
+      initialValue: true,
     }),
     defineField({
-      name: 'relatedProducts',
-      title: 'Related Products',
-      type: 'array',
-      of: [
-        {
-          type: 'reference',
-          to: [{ type: 'product' }],
-        },
+      name: 'isFeatured',
+      title: 'Featured on Homepage',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'object',
+      fields: [
+        { name: 'title', title: 'Title', type: 'string' },
+        { name: 'description', title: 'Description', type: 'text' },
       ],
     }),
   ],
   preview: {
     select: {
       title: 'name',
-      media: 'mainImage',
-      category: 'category.name',
-    },
-    prepare(selection) {
-      const { title, media, category } = selection;
-      return {
-        title,
-        media,
-        subtitle: category ? `Category: ${category}` : '',
-      };
+      subtitle: 'category',
+      media: 'image',
     },
   },
 }); 

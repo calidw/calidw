@@ -2,7 +2,7 @@ import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'category',
-  title: 'Categories',
+  title: 'Category',
   type: 'document',
   fields: [
     defineField({
@@ -25,7 +25,18 @@ export default defineType({
       name: 'description',
       title: 'Description',
       type: 'text',
-      rows: 3,
+    }),
+    defineField({
+      name: 'parentCategory',
+      title: 'Parent Category',
+      type: 'reference',
+      to: [{ type: 'category' }],
+    }),
+    defineField({
+      name: 'icon',
+      title: 'Icon',
+      type: 'string',
+      description: 'Icon name (for use with HeroIcons or similar)',
     }),
     defineField({
       name: 'image',
@@ -35,10 +46,17 @@ export default defineType({
         hotspot: true,
       },
     }),
+    defineField({
+      name: 'orderBy',
+      title: 'Order (for sorting)',
+      type: 'number',
+      hidden: true,
+    }),
   ],
   preview: {
     select: {
       title: 'name',
+      subtitle: 'description',
       media: 'image',
     },
   },

@@ -2,17 +2,20 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  price: number;
+  price?: number;
   imageUrl: string;
   category: 'door' | 'window';
-  features: string[];
-  materials: string[];
-  dimensions: {
-    width: number;
-    height: number;
-    unit: 'in' | 'cm';
-  };
+  features?: string[];
+  materials?: string[];
   inStock: boolean;
+  titleTwentyFourCompliant?: boolean;
+  isFeatured?: boolean;
+  gallery?: string[];
+  slug?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+  };
 }
 
 export const products: Product[] = [
@@ -25,12 +28,8 @@ export const products: Product[] = [
     category: 'window',
     features: ['California Title 24 compliant', 'Energy efficient', 'Tilt-in sashes for easy cleaning', 'Child safety locks', 'Custom grid patterns available'],
     materials: ['Vinyl frame', 'Double-pane glass', 'Weatherproof seals'],
-    dimensions: {
-      width: 32,
-      height: 54,
-      unit: 'in'
-    },
-    inStock: true
+    inStock: true,
+    titleTwentyFourCompliant: true
   },
   {
     id: 'window-002',
@@ -41,11 +40,6 @@ export const products: Product[] = [
     category: 'window',
     features: ['California Title 24 compliant', 'Energy efficient', 'Full opening ventilation', 'Easy operation handle', 'Multi-point locking'],
     materials: ['Fiberglass frame', 'Low-E glass', 'Stainless steel hinges'],
-    dimensions: {
-      width: 30,
-      height: 48,
-      unit: 'in'
-    },
     inStock: true
   },
   {
@@ -57,11 +51,6 @@ export const products: Product[] = [
     category: 'window',
     features: ['California Title 24 compliant', 'Energy efficient', 'Creates additional indoor space', 'Panoramic views', 'Custom angle configurations'],
     materials: ['Hardwood frame', 'Triple-pane glass', 'Energy efficient insulation'],
-    dimensions: {
-      width: 80,
-      height: 60,
-      unit: 'in'
-    },
     inStock: true
   },
   {
@@ -73,11 +62,6 @@ export const products: Product[] = [
     category: 'window',
     features: ['California Title 24 compliant', 'Energy efficient', 'Smooth gliding operation', 'Removable sash for cleaning', 'Dual locks for security'],
     materials: ['Vinyl frame', 'Tempered glass option', 'Anodized aluminum track'],
-    dimensions: {
-      width: 36,
-      height: 24,
-      unit: 'in'
-    },
     inStock: true
   },
   {
@@ -89,11 +73,6 @@ export const products: Product[] = [
     category: 'window',
     features: ['California Title 24 compliant', 'Energy efficient', 'Maximum light transmission', 'Fixed design for optimal insulation', 'Custom sizes available'],
     materials: ['Fiberglass frame', 'Low-E glass', 'Argon gas fill for insulation'],
-    dimensions: {
-      width: 48,
-      height: 48,
-      unit: 'in'
-    },
     inStock: true
   },
   {
@@ -105,11 +84,6 @@ export const products: Product[] = [
     category: 'window',
     features: ['California Title 24 compliant', 'Energy efficient', 'Weather-resistant ventilation', 'Easy to operate', 'Multiple configurations available'],
     materials: ['Vinyl or fiberglass frame options', 'Insulated glass', 'Durable hardware'],
-    dimensions: {
-      width: 36,
-      height: 24,
-      unit: 'in'
-    },
     inStock: true
   },
   {
@@ -121,11 +95,6 @@ export const products: Product[] = [
     category: 'door',
     features: ['Multiple style options', 'Smooth operation', 'Sound dampening', 'Custom sizing available'],
     materials: ['Solid wood core', 'Various finish options', 'Quality hardware'],
-    dimensions: {
-      width: 30,
-      height: 80,
-      unit: 'in'
-    },
     inStock: true
   },
   {
@@ -137,11 +106,6 @@ export const products: Product[] = [
     category: 'door',
     features: ['California Title 24 compliant', 'Energy efficient', 'Dual opening panels', 'Low-E glass', 'Multi-point locking system'],
     materials: ['Hardwood frame', 'Insulated glass', 'Premium hardware'],
-    dimensions: {
-      width: 72,
-      height: 80,
-      unit: 'in'
-    },
     inStock: true
   },
   {
@@ -153,11 +117,6 @@ export const products: Product[] = [
     category: 'door',
     features: ['California Title 24 compliant', 'Energy efficient', 'Smooth gliding operation', 'Security locks', 'Screen included'],
     materials: ['Vinyl or aluminum frame options', 'Tempered safety glass', 'Precision rollers'],
-    dimensions: {
-      width: 72,
-      height: 80,
-      unit: 'in'
-    },
     inStock: true
   },
   {
@@ -169,11 +128,6 @@ export const products: Product[] = [
     category: 'door',
     features: ['California Title 24 compliant', 'Energy efficient', 'Enhanced security features', 'Weather resistant', 'Multiple style options'],
     materials: ['Fiberglass or steel construction', 'Polyurethane foam core', 'Premium weather stripping'],
-    dimensions: {
-      width: 36,
-      height: 80,
-      unit: 'in'
-    },
     inStock: true
   }
 ];

@@ -15,6 +15,15 @@ export default defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'mobileImage',
+      title: 'Mobile Image (Optional)',
+      description: 'Optional optimized image for mobile devices. If not provided, the main image will be used.',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: 'alt',
       title: 'Alt Text',
       type: 'string',
@@ -30,6 +39,31 @@ export default defineType({
       title: 'Description',
       type: 'text',
       rows: 3,
+    }),
+    defineField({
+      name: 'buttonText',
+      title: 'Button Text',
+      type: 'string',
+      description: 'Add a call-to-action button for this slide',
+    }),
+    defineField({
+      name: 'buttonLink',
+      title: 'Button Link',
+      type: 'string',
+      description: 'URL for the button',
+    }),
+    defineField({
+      name: 'textPosition',
+      title: 'Text Position',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Center', value: 'center' },
+          { title: 'Right', value: 'right' },
+        ],
+      },
+      initialValue: 'left',
     }),
   ],
   preview: {

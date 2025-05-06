@@ -23,6 +23,16 @@ interface FormErrors {
   preferredContact?: string;
 }
 
+interface HubSpotError {
+  message?: string;
+  error?: string;
+}
+
+// HubSpot form submission constants
+const PORTAL_ID = '242702836';
+const FORM_GUID = '70dec8ab-a828-4664-8d0c-f77840902b61';
+const HUBSPOT_API_URL = `https://api.hsforms.com/submissions/v3/integration/submit/${PORTAL_ID}/${FORM_GUID}`;
+
 // Animation variants
 const formItemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -49,6 +59,7 @@ const ContactForm = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -64,7 +75,7 @@ const ContactForm = () => {
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     else if (!/^\S+@\S+\.\S+$/.test(formData.email)) newErrors.email = 'Email is invalid';
     // Only require phone if preferred contact is phone
-    if (formData.preferredContact === 'phone' && !formData.phone.trim()) newErrors.phone = 'Phone number is required for phone contact';
+    if (formData.preferredContact === 'Phone' && !formData.phone.trim()) newErrors.phone = 'Phone number is required for phone contact';
     if (!formData.interest) newErrors.interest = 'Please select your interest';
     if (!formData.preferredContact) newErrors.preferredContact = 'Please select preferred contact method';
     if (!formData.message.trim()) newErrors.message = 'Message is required';
@@ -72,29 +83,104 @@ const ContactForm = () => {
     return Object.keys(newErrors).length === 0;
   };
   
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setSubmissionError(null);
+    
     if (validateForm()) {
       setIsSubmitting(true);
-      // Simulate API call
-      setTimeout(() => {
-        console.log('Form submitted:', formData);
+      
+      try {
+        // Extract first and last name
+        const nameParts = formData.name.trim().split(' ');
+        const firstName = nameParts[0];
+        const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+        
+        // Prepare the data for HubSpot
+        const formattedData = {
+          submittedAt: Date.now(),
+          fields: [
+            { name: 'firstname', value: firstName },
+            { name: 'lastname', value: lastName || ' ' },
+            { name: 'email', value: formData.email },
+            { name: 'phone', value: formData.phone || '' },
+            
+            // Main standardized field names for message content
+            { name: 'message', value: formData.message },
+            { name: 'notes', value: formData.message },
+            
+            // HubSpot "contact notes" field name (common in many forms)
+            { name: 'hs_lead_notes', value: formData.message },
+            
+            // Form-specific field with proper HubSpot format
+            { name: 'message__c', value: formData.message },
+            
+            // Include the interest and preferred contact method
+            { name: 'i_am_interested_in___', value: formData.interest },
+            { name: 'preferred_contact_method__', value: formData.preferredContact }
+          ],
+          context: {
+            pageUri: window.location.href,
+            pageName: document.title
+          },
+          legalConsentOptions: {
+            consent: {
+              consentToProcess: true,
+              text: "I agree to allow Cali Door & Window to store and process my personal data."
+            }
+          }
+        };
+        
+        // Submit to HubSpot API
+        const response = await fetch(HUBSPOT_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formattedData)
+        });
+        
+        const responseData = await response.json();
+        
+        if (!response.ok) {
+          let errorMessage = 'Failed to submit form';
+          
+          if (responseData) {
+            if (responseData.message) {
+              errorMessage = responseData.message;
+            } else if (responseData.errors && responseData.errors.length > 0) {
+              errorMessage = responseData.errors.map((err: HubSpotError) => 
+                `${err.message || err.error || JSON.stringify(err)}`
+              ).join(', ');
+            } else {
+              errorMessage = `HubSpot error (${response.status}): ${JSON.stringify(responseData)}`;
+            }
+          }
+          
+          throw new Error(errorMessage);
+        }
+        
+        // Form submitted successfully
         setIsSubmitting(false);
         setIsSubmitted(true);
         // Reset form fields after successful submission
         setFormData({ name: '', email: '', phone: '', message: '', interest: '', preferredContact: '' });
-      }, 1500);
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        setIsSubmitting(false);
+        setSubmissionError(error instanceof Error ? error.message : 'An error occurred while submitting the form. Please try again.');
+      }
     }
   };
 
   // Styles for inputs
   const inputBaseClass = "peer block w-full px-4 py-3.5 rounded-xl shadow-sm transition-all duration-200 outline-none bg-white placeholder-transparent focus:shadow-md";
-  const labelBaseClass = "absolute left-3 -top-2 text-xs font-medium transition-all duration-200 ease-in-out peer-placeholder-shown:text-base peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-3.5 peer-focus:-top-2 peer-focus:text-amber-600 peer-focus:text-xs pointer-events-none bg-white px-1 z-10"; 
-  const inputNormalBorder = "border border-slate-200 focus:border-amber-500 focus:ring-1 focus:ring-amber-500";
+  const labelBaseClass = "absolute left-3 -top-2 text-xs font-medium transition-all duration-200 ease-in-out peer-placeholder-shown:text-base peer-placeholder-shown:text-slate-400 peer-placeholder-shown:top-3.5 peer-focus:-top-2 peer-focus:text-red-600 peer-focus:text-xs pointer-events-none bg-white px-1 z-10"; 
+  const inputNormalBorder = "border border-slate-200 focus:border-red-500 focus:ring-1 focus:ring-red-500";
   const inputErrorBorder = "border border-red-300 ring-1 ring-red-500"; 
   
   // Select styles
-  const selectClass = "block w-full px-4 py-3.5 rounded-xl shadow-sm border border-slate-200 transition-all duration-200 bg-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 focus:shadow-md outline-none appearance-none pr-10";
+  const selectClass = "block w-full px-4 py-3.5 rounded-xl shadow-sm border border-slate-200 transition-all duration-200 bg-white focus:border-red-500 focus:ring-1 focus:ring-red-500 focus:shadow-md outline-none appearance-none pr-10";
   
   return (
     <div className="w-full">
@@ -120,7 +206,7 @@ const ContactForm = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setIsSubmitted(false)}
-                className="mt-6 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-white font-medium rounded-full hover:from-amber-500 hover:to-amber-400 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
+                className="mt-6 px-6 py-3 bg-gradient-to-r from-red-800 to-red-700 text-white font-medium rounded-full hover:bg-gradient-to-r hover:from-red-600 hover:to-red-500 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
                 Send Another Message
               </motion.button>
@@ -134,6 +220,16 @@ const ContactForm = () => {
           onSubmit={handleSubmit} 
           className="space-y-6"
         >
+          {submissionError && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-md"
+            >
+              <p>{submissionError}</p>
+            </motion.div>
+          )}
+          
           {/* Name Field */}
           <motion.div 
             className="relative"
@@ -198,14 +294,14 @@ const ContactForm = () => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              required={formData.preferredContact === 'phone'}
+              required={formData.preferredContact === 'Phone'}
               className={`${inputBaseClass} ${errors.phone ? inputErrorBorder : inputNormalBorder}`}
               placeholder="Phone Number"
               aria-invalid={!!errors.phone}
               aria-describedby={errors.phone ? "phone-error" : undefined}
             />
             <label htmlFor="phone" className={`${labelBaseClass} ${errors.phone ? 'text-red-600' : ''}`}>
-              Phone {formData.preferredContact === 'phone' && <span className="text-red-500">*</span>}
+              Phone {formData.preferredContact === 'Phone' && <span className="text-red-500">*</span>}
             </label>
             {errors.phone && (
               <p id="phone-error" className="mt-1.5 text-xs text-red-600 pl-1">{errors.phone}</p>
@@ -233,10 +329,10 @@ const ContactForm = () => {
                 aria-describedby={errors.interest ? "interest-error" : undefined}
               >
                 <option value="" disabled>Select an option...</option>
-                <option value="doors">Doors</option>
-                <option value="windows">Windows</option>
-                <option value="both">Both Doors & Windows</option>
-                <option value="consultation">General Consultation</option> 
+                <option value="Doors">Doors</option>
+                <option value="Windows">Windows</option>
+                <option value="Both Doors & Windows">Both Doors & Windows</option>
+                <option value="General Consultation">General Consultation</option> 
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                 <svg className="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -270,8 +366,8 @@ const ContactForm = () => {
                 aria-describedby={errors.preferredContact ? "preferredContact-error" : undefined}
               >
                 <option value="" disabled>Select an option...</option>
-                <option value="email">Email</option>
-                <option value="phone">Phone</option>
+                <option value="Email">Email</option>
+                <option value="Phone">Phone</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                 <svg className="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -314,17 +410,15 @@ const ContactForm = () => {
           <motion.div 
             variants={formItemVariants}
             custom={6}
-            className="pt-2"
+            className="!mt-10"
           >
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+            <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full flex justify-center items-center px-6 py-4 rounded-full shadow-md text-base font-semibold text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 ${
+              className={`w-full py-4 rounded-xl text-white font-semibold flex items-center justify-center shadow-md transition-all duration-300 ${
                 isSubmitting 
-                  ? 'bg-amber-400 cursor-not-allowed' 
-                  : 'bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400'
+                  ? 'bg-slate-400 cursor-not-allowed' 
+                  : 'bg-gradient-to-r from-red-800 to-red-700 hover:bg-gradient-to-r hover:from-red-600 hover:to-red-500 hover:shadow-lg transform hover:-translate-y-1'
               }`}
             >
               {isSubmitting ? (
@@ -338,10 +432,10 @@ const ContactForm = () => {
               ) : (
                 <>
                   Send Message
-                  <PaperAirplaneIcon className="ml-2 -mr-1 h-5 w-5" />
+                  <PaperAirplaneIcon className="h-5 w-5 ml-2" />
                 </>
               )}
-            </motion.button>
+            </button>
           </motion.div>
         </motion.form>
       )}

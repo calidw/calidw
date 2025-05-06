@@ -10,9 +10,10 @@ interface ProductCardProps {
   showPrice?: boolean;
 }
 
-export function ProductCard({ product, showPrice = true }: ProductCardProps) {
-  const { id, name, description, price, imageUrl, category, features } = product;
-  const productUrl = `/products/${id}`;
+export function ProductCard({ product, showPrice = false }: ProductCardProps) {
+  const { id, name, description, imageUrl, category, features } = product;
+  // Use slug if available, otherwise fall back to id
+  const productUrl = `/products/${product.slug || id}`;
   const [imgError, setImgError] = useState(false);
 
   // Fallback image URL for errors
@@ -25,7 +26,7 @@ export function ProductCard({ product, showPrice = true }: ProductCardProps) {
   );
 
   return (
-    <Link href={productUrl} className="group block h-full overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 bg-white border border-slate-100 hover:border-amber-200">
+    <Link href={productUrl} className="group block h-full overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 bg-white border border-slate-100 hover:border-red-300">
       <div className="relative w-full aspect-square overflow-hidden">
         <Image
           src={imgError ? fallbackImg : imageUrl} 
@@ -47,14 +48,14 @@ export function ProductCard({ product, showPrice = true }: ProductCardProps) {
       </div>
       <div className="p-5">
         <div className="flex items-center justify-between mb-2">
-          <span className="px-3 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-800">
+          <span className="px-3 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">
             {category === 'window' ? 'Window' : 'Door'}
           </span>
-          {showPrice && (
-            <span className="text-lg font-semibold text-amber-600">${price.toFixed(2)}</span>
+          {showPrice && product.price && (
+            <span className="text-lg font-semibold text-red-800">${product.price.toFixed(2)}</span>
           )}
         </div>
-        <h3 className="text-xl font-bold text-gray-800 mb-1 group-hover:text-amber-700 transition-colors duration-300">{name}</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-1 group-hover:text-red-800 transition-colors duration-300">{name}</h3>
         <p className="text-sm text-gray-600 mb-3 line-clamp-2">{description}</p>
         
         {/* Product features */}
@@ -72,7 +73,7 @@ export function ProductCard({ product, showPrice = true }: ProductCardProps) {
         
         <div className="mt-3 flex items-center">
           <div className="flex-grow">
-            <span className="inline-flex items-center text-sm text-slate-600 group-hover:text-amber-800 transition-colors duration-300">
+            <span className="inline-flex items-center text-sm text-slate-600 group-hover:text-red-800 transition-colors duration-300">
               View details
               <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
