@@ -1,12 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
+
+// Explicit motion components for React 19 compatibility
+const MotionDiv = motion.div;
 
 const navItems = [
   { name: 'Products', href: '/products' },
@@ -22,21 +25,33 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
-  // Handle scroll events
+  // Handle scroll events - optimized with throttling
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      const offset = window.scrollY;
-      if (offset > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const offset = window.scrollY;
+          setScrolled(offset > 50);
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
+  }, []);
+
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen(prev => !prev);
+  }, []);
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
   }, []);
 
   return (
@@ -44,7 +59,7 @@ export default function Header() {
       {/* Top Banner */}
       <div className="bg-red-800 text-white py-1.5 text-sm font-semibold">
         <div className="container mx-auto px-4 lg:px-6 flex justify-between items-center">
-          <span className="font-bold">Contact us today for a free consultation</span>
+          <span className="font-bold">Get free consultation</span>
           <a href="tel:8182823437" className="flex items-center font-bold hover:text-slate-200 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
               <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
@@ -58,10 +73,10 @@ export default function Header() {
         scrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white shadow-sm'
       }`}>
         <nav className="container mx-auto flex items-center justify-between py-3 px-4 lg:px-6" aria-label="Global">
-          <motion.div 
+          <MotionDiv 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
             className="flex lg:flex-1"
           >
             <Link href="/" className="inline-flex items-center">
@@ -76,25 +91,20 @@ export default function Header() {
                 />
               </div>
             </Link>
-          </motion.div>
+          </MotionDiv>
           
           <div className="flex lg:hidden">
             <button
               type="button"
               className="inline-flex items-center justify-center rounded-full p-2 text-slate-700 hover:bg-slate-100 transition-colors"
-              onClick={() => setMobileMenuOpen(true)}
+              onClick={toggleMobileMenu}
             >
               <span className="sr-only">Open main menu</span>
               <Bars3Icon className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
           
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="hidden lg:flex lg:gap-x-6"
-          >
+          <div className="hidden lg:flex lg:gap-x-6">
             {navItems.map((item) => {
               const isActive = pathname === item.href || 
                              (item.href !== '/' && pathname?.startsWith(item.href));
@@ -115,14 +125,9 @@ export default function Header() {
                 </Link>
               );
             })}
-          </motion.div>
+          </div>
           
-          <motion.div 
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="hidden lg:flex lg:flex-1 lg:justify-end"
-          >
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <Link 
               href="/contact?form=quote" 
               className="group relative inline-flex items-center justify-center px-5 py-2 text-sm font-semibold text-white bg-gradient-to-r from-red-800 to-red-700 rounded-full overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
@@ -132,14 +137,14 @@ export default function Header() {
               </span>
               <span className="absolute inset-0 bg-gradient-to-r from-red-700 to-red-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
             </Link>
-          </motion.div>
+          </div>
         </nav>
         
-        <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+        <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={closeMobileMenu}>
           <div className="fixed inset-0 z-50 bg-slate-900/20 backdrop-blur-sm" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white/95 backdrop-blur-md px-4 py-2 sm:max-w-sm sm:ring-1 sm:ring-slate-900/10 shadow-xl">
             <div className="flex items-center justify-between">
-              <Link href="/" className="inline-flex items-center" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/" className="inline-flex items-center" onClick={closeMobileMenu}>
                 <span className="sr-only">Cali Doors and Windows</span>
                 <div className="relative w-20 h-10 flex-shrink-0">
                   <Image
@@ -153,7 +158,7 @@ export default function Header() {
               <button
                 type="button"
                 className="rounded-full p-2 text-slate-700 hover:bg-slate-100 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={closeMobileMenu}
               >
                 <span className="sr-only">Close menu</span>
                 <XMarkIcon className="h-5 w-5" aria-hidden="true" />
@@ -175,7 +180,7 @@ export default function Header() {
                             ? 'bg-red-100 text-red-800' 
                             : 'text-slate-900 hover:bg-slate-50 hover:text-red-800'
                         } transition-colors`}
-                        onClick={() => setMobileMenuOpen(false)}
+                        onClick={closeMobileMenu}
                       >
                         <div className="flex items-center">
                           {isActive && (
@@ -191,7 +196,7 @@ export default function Header() {
                   <Link
                     href="/contact?form=quote"
                     className="flex w-full items-center justify-center rounded-full px-4 py-2.5 text-base font-semibold text-white bg-gradient-to-r from-red-800 to-red-700 shadow-md hover:from-red-700 hover:to-red-600 transition-all duration-300"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={closeMobileMenu}
                   >
                     Request a Quote
                   </Link>

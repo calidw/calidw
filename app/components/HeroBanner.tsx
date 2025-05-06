@@ -154,25 +154,25 @@ const HeroBanner = ({
             ))
           )}
           
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/20"></div>
+          {/* Overlay - Less dense on mobile */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/10 md:from-black/60 md:via-black/40 md:to-black/20"></div>
         </div>
       )}
       
       {/* Content */}
       <div className="relative z-10 min-h-[85vh] flex flex-col md:flex-row">
-        {/* Left side text container with blur - reduced blur on mobile */}
-        <div className="w-full md:w-2/5 min-h-[85vh] flex items-center relative">
-          {/* Mobile overlay - use significantly less blur on mobile */}
+        {/* Left side text container with reduced blur */}
+        <div className="w-full md:w-2/5 min-h-[60vh] md:min-h-[85vh] flex items-center relative">
+          {/* Mobile overlay - minimal blur on mobile */}
           <div 
-            className={`absolute inset-0 bg-black/40 md:hidden`}
-            style={{ backdropFilter: `blur(${Math.max(1, Math.floor(leftTextBlur/3))}px)` }}
+            className={`absolute inset-0 bg-black/30 md:hidden`}
+            style={{ backdropFilter: `blur(2px)` }}
           ></div>
           
-          {/* Desktop blur container - full height - use the configured blur value */}
+          {/* Desktop blur container - use lower blur value */}
           <div 
             className={`hidden md:block absolute inset-y-0 left-0 w-full bg-black/30`}
-            style={{ backdropFilter: `blur(${leftTextBlur}px)` }}
+            style={{ backdropFilter: `blur(4px)` }}
           ></div>
           
           <div className="relative z-10 w-full max-w-xl pl-4 sm:pl-8 md:pl-12 pr-4 sm:pr-8 md:pr-12 py-6 sm:py-8 md:py-12">

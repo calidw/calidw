@@ -180,12 +180,15 @@ export default function GalleryGrid({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 overflow-y-auto bg-black/90 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[60] overflow-y-auto bg-black/90 flex items-center justify-center p-4"
             onClick={closeZoomView}
           >
             <button 
-              className="absolute top-4 right-4 z-10 bg-white/10 backdrop-blur-sm text-white rounded-full p-2 hover:bg-white/20 transition-colors"
-              onClick={closeZoomView}
+              className="absolute top-20 right-4 sm:top-4 z-10 bg-white/20 backdrop-blur-sm text-white rounded-full p-3 shadow-lg hover:bg-white/30 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeZoomView();
+              }}
               aria-label="Close"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
