@@ -78,7 +78,6 @@ const nextConfig = {
     // Remove this when you've fixed the type issues
     ignoreBuildErrors: true,
   },
-  output: 'export',
 };
 
 module.exports = nextConfig; 
