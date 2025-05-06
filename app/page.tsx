@@ -166,8 +166,8 @@ export default function Home() {
             label: img.caption || '',
             description: ''
           }))}
-          ctaText={homeData?.heroBanner?.ctaText || "Explore Products"}
-          ctaLink={homeData?.heroBanner?.ctaLink || "/products"}
+          ctaText={homeData?.heroBanner?.ctaText || "Get Consultation"}
+          ctaLink={homeData?.heroBanner?.ctaLink || "/contact"}
           leftTextBlur={homeData?.heroBanner?.leftTextBlur || 6}
         />
         

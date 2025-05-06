@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useEffect, useState, useCallback } from 'react';
@@ -73,8 +72,8 @@ const HeroBanner = ({
   ctaLink, // From Sanity
   leftTextBlur = 6, // Default blur value of 6px
   sliderImages = defaultSliderImages,
-  buttonPrimary = "Schedule Consultation",
-  buttonPrimaryLink = "/contact?form=consultation",
+  buttonPrimary = "Free Consultation",
+  buttonPrimaryLink = "/contact",
   buttonSecondary = "Call Us",
   buttonSecondaryLink = "tel:8182823437"
 }: HeroBannerProps) => {
@@ -119,10 +118,10 @@ const HeroBanner = ({
   }, [sliderImages.length]);
 
   return (
-    <div className="relative overflow-hidden min-h-[85vh]">
-      {/* Full-width background image */}
+    <section className="relative min-h-[85vh] isolate">
+      {/* Full-width background image - make it non-interactive */}
       {isMounted && (
-        <div className="absolute inset-0 w-full h-full z-0">
+        <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
           {useSingleImage ? (
             <Image
               src={imageUrl}
@@ -141,7 +140,7 @@ const HeroBanner = ({
                   zIndex: currentSlide === index ? 1 : 0
                 }}
                 transition={{ duration: 0.7 }}
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 w-full h-full pointer-events-none"
               >
                 <Image
                   src={image.src}
@@ -155,7 +154,7 @@ const HeroBanner = ({
           )}
           
           {/* Overlay - Less dense on mobile */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/10 md:from-black/60 md:via-black/40 md:to-black/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/10 md:from-black/60 md:via-black/40 md:to-black/20 pointer-events-none"></div>
         </div>
       )}
       
@@ -165,17 +164,17 @@ const HeroBanner = ({
         <div className="w-full md:w-2/5 min-h-[60vh] md:min-h-[85vh] flex items-center relative">
           {/* Mobile overlay - minimal blur on mobile */}
           <div 
-            className={`absolute inset-0 bg-black/30 md:hidden`}
-            style={{ backdropFilter: `blur(2px)` }}
+            className="absolute inset-0 bg-black/30 md:hidden pointer-events-none"
+            style={{ backdropFilter: `blur(${Math.max(1, Math.floor(leftTextBlur/3))}px)` }}
           ></div>
           
           {/* Desktop blur container - use lower blur value */}
           <div 
-            className={`hidden md:block absolute inset-y-0 left-0 w-full bg-black/30`}
-            style={{ backdropFilter: `blur(4px)` }}
+            className="hidden md:block absolute inset-y-0 left-0 w-full bg-black/30 pointer-events-none"
+            style={{ backdropFilter: `blur(${leftTextBlur}px)` }}
           ></div>
           
-          <div className="relative z-10 w-full max-w-xl pl-4 sm:pl-8 md:pl-12 pr-4 sm:pr-8 md:pr-12 py-6 sm:py-8 md:py-12">
+          <div className="relative z-20 w-full max-w-xl pl-4 sm:pl-8 md:pl-12 pr-4 sm:pr-8 md:pr-12 py-6 sm:py-8 md:py-12">
             <MotionDiv
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -216,35 +215,77 @@ const HeroBanner = ({
               {displaySubtitle}
             </MotionP>
             
-            <MotionDiv 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="flex flex-wrap gap-4 justify-start"
-            >
-              {displayButtonPrimary && (
-                <Link
-                  href={displayButtonPrimaryLink || "#"}
-                  className="rounded-full bg-gradient-to-r from-red-800 to-red-700 px-8 py-4 text-base font-semibold text-white shadow-lg hover:bg-gradient-to-r hover:from-red-600 hover:to-red-500 transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  {displayButtonPrimary}
-                </Link>
-              )}
+            {/* COMPLETELY REBUILT BUTTON SECTION - FURTHER IMPROVED */}
+            <div className="mt-6 mb-10 flex flex-wrap gap-4 relative" style={{ zIndex: 9999 }}>
+              {/* Primary Button - Get Consultation */}
+              <a 
+                href={displayButtonPrimaryLink || "/contact"} 
+                style={{
+                  display: 'inline-block',
+                  position: 'relative',
+                  zIndex: 9999,
+                  padding: '16px 32px',
+                  background: 'linear-gradient(to right, #991b1b, #b91c1c)',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  borderRadius: '9999px',
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                  cursor: 'pointer',
+                  pointerEvents: 'auto',
+                  textDecoration: 'none'
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Primary button clicked');
+                  window.location.href = displayButtonPrimaryLink || "/contact";
+                }}
+                onMouseDown={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
+              >
+                {displayButtonPrimary}
+              </a>
               
+              {/* Secondary Button - Call Us */}
               {buttonSecondary && (
                 <a 
                   href={buttonSecondaryLink || "#"} 
-                  className="rounded-full bg-white/20 backdrop-blur-sm px-8 py-4 text-base font-semibold text-white border border-white/30 hover:bg-white/30 transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    position: 'relative', 
+                    zIndex: 9999,
+                    padding: '16px 32px',
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    backdropFilter: 'blur(4px)',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    borderRadius: '9999px',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    cursor: 'pointer',
+                    pointerEvents: 'auto',
+                    textDecoration: 'none'
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Secondary button clicked');
+                    if (buttonSecondaryLink) {
+                      window.location.href = buttonSecondaryLink;
+                    }
+                  }}
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
                 >
                   {buttonSecondaryLink?.startsWith('tel:') && (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" style={{ width: '20px', height: '20px', marginRight: '8px' }} viewBox="0 0 20 20" fill="currentColor">
                       <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                     </svg>
                   )}
                   {buttonSecondary}
                 </a>
               )}
-            </MotionDiv>
+            </div>
             
             <MotionDiv 
               initial={{ opacity: 0 }}
@@ -276,14 +317,14 @@ const HeroBanner = ({
         <div className="hidden md:block md:w-3/5"></div>
       </div>
       
-      {/* Slider navigation (only for multiple images) */}
+      {/* Slider navigation - fix z-index and make them explicitly interactive */}
       {!useSingleImage && sliderImages.length > 1 && (
         <>
           {/* Arrow navigation */}
-          <div className="hidden sm:block absolute z-20 inset-y-0 left-0 right-0">
+          <div className="hidden sm:block absolute z-30 inset-y-0 left-0 right-0 pointer-events-none">
             <button 
               onClick={goToPrevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm hover:bg-black/40 flex items-center justify-center transition duration-300"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm hover:bg-black/40 flex items-center justify-center transition duration-300 pointer-events-auto"
               aria-label="Previous slide"
             >
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -292,7 +333,7 @@ const HeroBanner = ({
             </button>
             <button 
               onClick={goToNextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm hover:bg-black/40 flex items-center justify-center transition duration-300"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm hover:bg-black/40 flex items-center justify-center transition duration-300 pointer-events-auto"
               aria-label="Next slide"
             >
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -302,12 +343,12 @@ const HeroBanner = ({
           </div>
           
           {/* Dot navigation */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-2 pointer-events-none">
             {sliderImages.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                className={`h-2 w-2 rounded-full transition-all duration-300 pointer-events-auto ${
                   currentSlide === index 
                     ? 'bg-white w-6' 
                     : 'bg-white/50 hover:bg-white/80'
@@ -318,7 +359,7 @@ const HeroBanner = ({
           </div>
         </>
       )}
-    </div>
+    </section>
   );
 };
 
