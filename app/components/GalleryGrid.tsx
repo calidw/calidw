@@ -96,65 +96,41 @@ export default function GalleryGrid({
       </div>
       
       {/* Gallery Grid */}
-      <MotionDiv 
-        initial="hidden"
-        animate="visible"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
-      >
-        {filteredItems.map((item, index) => (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        {filteredItems.map((item) => (
           <MotionDiv
             key={item.id}
-            custom={index}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5 }}
             variants={fadeInUp}
             className="h-full"
           >
-            <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full group">
-              <div 
-                className="relative aspect-[4/3] w-full overflow-hidden cursor-pointer"
-                onClick={() => openZoomView(item)}
-              >
+            <div 
+              className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full group cursor-pointer"
+              onClick={() => openZoomView(item)}
+            >
+              <div className="relative aspect-[4/3] w-full overflow-hidden">
                 <Image
                   src={item.imageUrl}
                   alt={item.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
-                {/* Category Badge */}
                 <div className="absolute top-4 left-4 px-3 py-1 bg-black/70 backdrop-blur-sm rounded-full text-xs font-medium text-white">
                   {item.category}
                 </div>
-                {/* Zoom indicator */}
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="bg-white/90 backdrop-blur-sm rounded-full p-3">
-                    <svg className="w-6 h-6 text-slate-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-slate-900 mb-2 group-hover:text-slate-700 transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-slate-600 mb-4">
-                  {item.description}
-                </p>
-                <div className="pt-4 border-t border-slate-100">
-                  <button 
-                    onClick={() => openZoomView(item)}
-                    className="inline-flex items-center text-slate-700 font-medium hover:text-red-700 transition-colors group"
-                  >
-                    View Details
-                    <span className="ml-1.5 transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
-                  </button>
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-black/0 backdrop-blur-sm">
+                  <h3 className="text-lg font-medium text-white">
+                    {item.title}
+                  </h3>
                 </div>
               </div>
             </div>
           </MotionDiv>
         ))}
-      </MotionDiv>
+      </div>
       
       {/* Empty State */}
       {filteredItems.length === 0 && (

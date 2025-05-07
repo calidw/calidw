@@ -164,7 +164,7 @@ export default async function GalleryPage() {
                 Our Work
               </span>
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-slate-900 mb-6">
-                Inspiration Gallery
+                Gallery
               </h1>
               <p className="text-xl text-slate-600 leading-relaxed">
                 Explore our portfolio of completed projects and envision the possibilities for your own space.

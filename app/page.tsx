@@ -7,7 +7,7 @@ import HeroBanner from './components/HeroBanner';
 import Testimonials, { Testimonial } from './components/Testimonials';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { getHomePageData } from '../lib/sanity';
 import { urlFor } from '../lib/sanity';
 
@@ -113,6 +113,8 @@ const MotionDiv = motion.div;
 export default function Home() {
   const [homeData, setHomeData] = useState<HomeData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeItem, setActiveItem] = useState<GalleryItem | null>(null);
+  const [isZoomed, setIsZoomed] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,6 +153,17 @@ export default function Home() {
     '/images/gallery/french-patio-doors.jpg'
   ];
   
+  const openZoomView = (item: GalleryItem) => {
+    setActiveItem(item);
+    setIsZoomed(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeZoomView = () => {
+    setIsZoomed(false);
+    document.body.style.overflow = '';
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -351,7 +364,7 @@ export default function Home() {
               </p>
             </MotionDiv>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
               {/* Use Sanity galleryItems if available, otherwise use defaults */}
               {(homeData?.gallerySection?.featuredGalleryItems || []).length > 0 ? (
                 // Map over Sanity items
@@ -365,26 +378,25 @@ export default function Home() {
                     variants={fadeInUp}
                     className="h-full"
                   >
-                    <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full group">
+                    <div 
+                      className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full group cursor-pointer"
+                      onClick={() => openZoomView(item)}
+                    >
                       <div className="relative aspect-[4/3] w-full overflow-hidden">
                         <Image
                           src={item.image}
-                          alt={item.title}
+                          alt={`${item.title} - ${item.category?.name || 'Gallery Image'}`}
                           fill
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         <div className="absolute top-4 left-4 px-3 py-1 bg-black/70 backdrop-blur-sm rounded-full text-xs font-medium text-white">
                           {item.category?.name}
                         </div>
-                      </div>
-                      
-                      <div className="p-6">
-                        <h3 className="text-xl font-semibold text-slate-900 mb-2 group-hover:text-slate-700 transition-colors">
-                          {item.title}
-                        </h3>
-                        <p className="text-slate-600 mb-4">
-                          {item.description}
-                        </p>
+                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-black/0 backdrop-blur-sm">
+                          <h3 className="text-lg font-medium text-white">
+                            {item.title}
+                          </h3>
+                        </div>
                       </div>
                     </div>
                   </MotionDiv>
@@ -397,7 +409,7 @@ export default function Home() {
                     image: defaultGalleryImages[0],
                     title: "Modern Home Entry",
                     description: "Contemporary entry door installation for a modern home in Pasadena.",
-                    category: { name: "Windows" },
+                    category: { name: "Windows", slug: "windows" },
                     isFeatured: true
                   },
                   {
@@ -405,7 +417,7 @@ export default function Home() {
                     image: defaultGalleryImages[1],
                     title: "Panoramic Windows",
                     description: "Large energy-efficient windows for a hillside home with stunning city views.",
-                    category: { name: "Windows" },
+                    category: { name: "Windows", slug: "windows" },
                     isFeatured: true
                   },
                   {
@@ -413,7 +425,7 @@ export default function Home() {
                     image: defaultGalleryImages[2],
                     title: "French Patio Doors",
                     description: "Elegant French doors connecting indoor living space to a beautiful garden patio.",
-                    category: { name: "Doors" },
+                    category: { name: "Doors", slug: "doors" },
                     isFeatured: true
                   }
                 ].map((item, index) => (
@@ -426,26 +438,25 @@ export default function Home() {
                     variants={fadeInUp}
                     className="h-full"
                   >
-                    <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full group">
+                    <div 
+                      className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full group cursor-pointer"
+                      onClick={() => openZoomView(item)}
+                    >
                       <div className="relative aspect-[4/3] w-full overflow-hidden">
                         <Image
                           src={item.image}
-                          alt={item.title}
+                          alt={`${item.title} - ${item.category?.name || 'Gallery Image'}`}
                           fill
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         <div className="absolute top-4 left-4 px-3 py-1 bg-black/70 backdrop-blur-sm rounded-full text-xs font-medium text-white">
                           {item.category?.name}
                         </div>
-                      </div>
-                      
-                      <div className="p-6">
-                        <h3 className="text-xl font-semibold text-slate-900 mb-2 group-hover:text-slate-700 transition-colors">
-                          {item.title}
-                        </h3>
-                        <p className="text-slate-600 mb-4">
-                          {item.description}
-                        </p>
+                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-black/0 backdrop-blur-sm">
+                          <h3 className="text-lg font-medium text-white">
+                            {item.title}
+                          </h3>
+                        </div>
                       </div>
                     </div>
                   </MotionDiv>
@@ -473,41 +484,76 @@ export default function Home() {
           title={homeData?.testimonialsSectionHeading || "What Our Clients Say"}
           subtitle={homeData?.testimonialsSectionSubheading || "Real feedback from satisfied homeowners and partners."}
         />
-        
-        {/* Map Section */}
-        <section className="py-20 bg-slate-50 relative">
-          <div className="container mx-auto px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                {homeData?.mapSection?.heading || "Visit Our Showroom"}
-              </h2>
-              <p className="text-lg text-slate-600">
-                {homeData?.mapSection?.subheading || "Come experience our premium doors and windows. Our expert staff is ready to assist you in our Glendale location."}
-              </p>
-            </div>
-            
-            <div className="rounded-2xl overflow-hidden shadow-lg h-96 relative">
-              {/* Google Maps embed from Sanity or default */}
-              <iframe 
-                src={
-                  homeData?.mapSection?.mapEmbedUrl || 
-                  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3302.5751569179746!2d-118.23315102345847!3d34.13832647253282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c0a9a4f2ef51%3A0x9acc8dec939d82d3!2s3746%20Foothill%20Blvd%20%231254%2C%20Glendale%2C%20CA%2091214%2C%20USA!5e0!3m2!1sen!2sin!4v1717002245704!5m2!1sen!2sin"
-                }
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Cali Door & Window Showroom Location"
-                aria-label="Map showing our showroom location at 3746 Foothill Boulevard #1254, Glendale, CA 91214"
-              ></iframe>
-            </div>
-          </div>
-        </section>
       </main>
       
       <Footer />
+
+      {/* Zoom View Modal */}
+      <AnimatePresence>
+        {isZoomed && activeItem && (
+          <MotionDiv
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] overflow-y-auto bg-black/90 flex items-center justify-center p-4"
+            onClick={closeZoomView}
+          >
+            <button 
+              className="absolute top-20 right-4 sm:top-4 z-10 bg-white/20 backdrop-blur-sm text-white rounded-full p-3 shadow-lg hover:bg-white/30 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeZoomView();
+              }}
+              aria-label="Close"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <div 
+              className="relative max-w-6xl w-full bg-white rounded-xl overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="grid md:grid-cols-2 min-h-[50vh]">
+                {/* Image Section */}
+                <div className="relative h-[50vh] md:h-auto">
+                  <Image
+                    src={activeItem.fullSizeImage || activeItem.image}
+                    alt={activeItem.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+                
+                {/* Details Section */}
+                <div className="p-8 overflow-y-auto max-h-[80vh]">
+                  <span className="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-medium rounded-full mb-4">
+                    {activeItem.category?.name}
+                  </span>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+                    {activeItem.title}
+                  </h2>
+                  <p className="text-slate-600 mb-8">
+                    {activeItem.description}
+                  </p>
+                  
+                  {/* CTA Section */}
+                  <div className="mt-8 pt-6 border-t border-slate-100">
+                    <Link
+                      href="/contact?form=quote"
+                      className="w-full block text-center py-3 px-4 bg-gradient-to-r from-red-800 to-red-700 text-white font-medium rounded-lg hover:bg-gradient-to-r hover:from-red-600 hover:to-red-500 transition-colors"
+                    >
+                      Request Similar Project
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </MotionDiv>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

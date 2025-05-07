@@ -94,8 +94,8 @@ const Footer = () => {
                 </a>
               </p>
               <p>
-                <a href="mailto:Sales@calidw.com" className="hover:text-red-800 transition-colors duration-200">
-                  Sales@calidw.com
+                <a href="mailto:sales@calidw.com" className="hover:text-red-800 transition-colors duration-200">
+                  sales@calidw.com
                 </a>
               </p>
             </address>

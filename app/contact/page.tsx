@@ -60,7 +60,7 @@ export default function ContactPage() {
                         </div>
                         <div>
                           <h3 className="font-medium text-lg text-white mb-2">
-                            Visit Our Showroom
+                            Address
                           </h3>
                           <address className="not-italic text-slate-300 leading-relaxed">
                             3746 Foothill Boulevard #1254<br />
@@ -75,7 +75,7 @@ export default function ContactPage() {
                         </div>
                         <div>
                           <h3 className="font-medium text-lg text-white mb-2">
-                            Showroom Hours
+                            Working Hours
                           </h3>
                           <p className="text-slate-300 leading-relaxed">
                             Mon - Fri: 9:00 AM - 6:00 PM<br />
@@ -110,8 +110,8 @@ export default function ContactPage() {
                             Email Us
                           </h3>
                           <p className="text-slate-300">
-                            <a href="mailto:Sales@calidw.com" className="hover:text-red-300 transition-colors duration-200">
-                              Sales@calidw.com
+                            <a href="mailto:sales@calidw.com" className="hover:text-red-300 transition-colors duration-200">
+                              sales@calidw.com
                             </a>
                           </p>
                         </div>
@@ -120,33 +120,6 @@ export default function ContactPage() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-        
-        {/* Map Section */}
-        <section className="py-20 bg-slate-50 relative">
-          <div className="container mx-auto px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">Visit Our Showroom</h2>
-              <p className="text-lg text-slate-600">
-                Come experience our premium doors and windows. Our expert staff is ready to assist you in our Glendale location.
-              </p>
-            </div>
-            
-            <div className="rounded-2xl overflow-hidden shadow-lg h-96 relative">
-              {/* Google Maps embed of address */}
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3302.5751569179746!2d-118.23315102345847!3d34.13832647253282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c0a9a4f2ef51%3A0x9acc8dec939d82d3!2s3746%20Foothill%20Blvd%20%231254%2C%20Glendale%2C%20CA%2091214%2C%20USA!5e0!3m2!1sen!2sin!4v1717002245704!5m2!1sen!2sin" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Cali Door & Window Showroom Location"
-                aria-label="Map showing our showroom location at 3746 Foothill Boulevard #1254, Glendale, CA 91214"
-              ></iframe>
             </div>
           </div>
         </section>
