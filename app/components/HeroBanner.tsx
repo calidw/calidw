@@ -242,8 +242,8 @@ const HeroBanner = ({
                 }}
                 onMouseDown={(e) => e.stopPropagation()}
                 onTouchStart={(e) => e.stopPropagation()}
-              >
-                {displayButtonPrimary}
+                >
+                  {displayButtonPrimary}
               </a>
               
               {/* Secondary Button - Call Us */}

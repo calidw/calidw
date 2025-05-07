@@ -9,7 +9,7 @@ interface FormData {
   name: string;
   email: string;
   phone: string;
-  message: string;
+  details: string;
   interest: string;
   preferredContact: string;
 }
@@ -18,7 +18,7 @@ interface FormErrors {
   name?: string;
   email?: string;
   phone?: string;
-  message?: string;
+  details?: string;
   interest?: string;
   preferredContact?: string;
 }
@@ -52,7 +52,7 @@ const ContactForm = () => {
     name: '',
     email: '',
     phone: '',
-    message: '',
+    details: '',
     interest: '',
     preferredContact: ''
   });
@@ -74,11 +74,10 @@ const ContactForm = () => {
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     else if (!/^\S+@\S+\.\S+$/.test(formData.email)) newErrors.email = 'Email is invalid';
-    // Only require phone if preferred contact is phone
     if (formData.preferredContact === 'Phone' && !formData.phone.trim()) newErrors.phone = 'Phone number is required for phone contact';
     if (!formData.interest) newErrors.interest = 'Please select your interest';
     if (!formData.preferredContact) newErrors.preferredContact = 'Please select preferred contact method';
-    if (!formData.message.trim()) newErrors.message = 'Message is required';
+    if (!formData.details.trim()) newErrors.details = 'Details are required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -104,18 +103,7 @@ const ContactForm = () => {
             { name: 'lastname', value: lastName || ' ' },
             { name: 'email', value: formData.email },
             { name: 'phone', value: formData.phone || '' },
-            
-            // Main standardized field names for message content
-            { name: 'message', value: formData.message },
-            { name: 'notes', value: formData.message },
-            
-            // HubSpot "contact notes" field name (common in many forms)
-            { name: 'hs_lead_notes', value: formData.message },
-            
-            // Form-specific field with proper HubSpot format
-            { name: 'message__c', value: formData.message },
-            
-            // Include the interest and preferred contact method
+            { name: 'messages', value: formData.details },
             { name: 'i_am_interested_in___', value: formData.interest },
             { name: 'preferred_contact_method__', value: formData.preferredContact }
           ],
@@ -164,7 +152,7 @@ const ContactForm = () => {
         setIsSubmitting(false);
         setIsSubmitted(true);
         // Reset form fields after successful submission
-        setFormData({ name: '', email: '', phone: '', message: '', interest: '', preferredContact: '' });
+        setFormData({ name: '', email: '', phone: '', details: '', interest: '', preferredContact: '' });
       } catch (error) {
         console.error('Error submitting form:', error);
         setIsSubmitting(false);
@@ -380,29 +368,29 @@ const ContactForm = () => {
             )}
           </motion.div>
           
-          {/* Message Field */}
+          {/* Details Field */}
           <motion.div 
             className="relative" 
             variants={formItemVariants}
             custom={5}
           >
             <textarea
-              id="message"
-              name="message"
+              id="details"
+              name="details"
               rows={4}
-              value={formData.message}
+              value={formData.details}
               onChange={handleChange}
               required
-              className={`${inputBaseClass} ${errors.message ? inputErrorBorder : inputNormalBorder}`}
-              placeholder="Message / Project Details"
-              aria-invalid={!!errors.message}
-              aria-describedby={errors.message ? "message-error" : undefined}
+              className={`${inputBaseClass} ${errors.details ? inputErrorBorder : inputNormalBorder}`}
+              placeholder="Details"
+              aria-invalid={!!errors.details}
+              aria-describedby={errors.details ? "details-error" : undefined}
             />
-            <label htmlFor="message" className={`${labelBaseClass} ${errors.message ? 'text-red-600' : ''}`}>
-              Message / Project Details <span className="text-red-500">*</span>
+            <label htmlFor="details" className={`${labelBaseClass} ${errors.details ? 'text-red-600' : ''}`}>
+              Details <span className="text-red-500">*</span>
             </label>
-            {errors.message && (
-              <p id="message-error" className="mt-1.5 text-xs text-red-600 pl-1">{errors.message}</p>
+            {errors.details && (
+              <p id="details-error" className="mt-1.5 text-xs text-red-600 pl-1">{errors.details}</p>
             )}
           </motion.div>
           

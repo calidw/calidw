@@ -32,7 +32,7 @@ export default function Header() {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const offset = window.scrollY;
+      const offset = window.scrollY;
           setScrolled(offset > 50);
           ticking = false;
         });
