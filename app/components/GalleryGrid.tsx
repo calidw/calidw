@@ -177,13 +177,13 @@ export default function GalleryGrid({
               onClick={(e) => e.stopPropagation()} // Prevent clicks inside from closing the modal
             >
               <div className="grid md:grid-cols-2 min-h-[50vh]">
-                {/* Image Section */}
-                <div className="relative h-[50vh] md:h-auto">
+                {/* Image Section - Updated to show full image without cropping */}
+                <div className="relative h-[60vh] md:h-auto">
                   <Image
                     src={activeItem.fullSizeImageUrl || activeItem.imageUrl}
                     alt={activeItem.title}
                     fill
-                    className="object-cover"
+                    className="object-contain bg-slate-50"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>

@@ -517,12 +517,12 @@ export default function Home() {
             >
               <div className="grid md:grid-cols-2 min-h-[50vh]">
                 {/* Image Section */}
-                <div className="relative h-[50vh] md:h-auto">
+                <div className="relative h-[60vh] md:h-auto">
                   <Image
                     src={activeItem.fullSizeImage || activeItem.image}
                     alt={activeItem.title}
                     fill
-                    className="object-cover"
+                    className="object-contain bg-slate-50"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
