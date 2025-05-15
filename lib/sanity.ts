@@ -5,7 +5,7 @@ import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 
 export const config = {
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'your-project-id',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'jdlrpcx4',
   apiVersion: '2023-05-03',
   useCdn: process.env.NODE_ENV === 'production',
 };
