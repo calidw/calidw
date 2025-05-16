@@ -302,12 +302,16 @@ const HeroBanner = ({
                   ))}
                 </div>
                 <p className="ml-2 font-medium text-white">4.9/5 <span className="text-white/80 font-normal">(200+ reviews)</span></p>
-              </div>
-              <div className="flex items-center">
-                <svg className="h-6 w-6 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>200+ satisfied clients</span>
+                <a
+                  href="https://www.yelp.com/biz/cali-doors-and-windows-glendale?osq=cali+doors+and+windows&override_cta=Get+pricing+%26+availability"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-4 inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow transition-colors text-sm"
+                  aria-label="Read our reviews on Yelp"
+                >
+                  <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.5 10.5c-.3-.5-.8-.8-1.4-.7l-4.2.7c-.2 0-.3-.1-.4-.2-.1-.1-.1-.3-.1-.4l.7-4.2c.1-.6-.2-1.1-.7-1.4-.5-.3-1.1-.2-1.5.2l-2.9 3.5c-.1.1-.3.1-.4.1-.2 0-.3-.1-.4-.2l-3.5-2.9c-.4-.4-1-.5-1.5-.2-.5.3-.8.8-.7 1.4l.7 4.2c0 .2-.1.3-.2.4-.1.1-.3.1-.4.1l-4.2-.7c-.6-.1-1.1.2-1.4.7-.3.5-.2 1.1.2 1.5l3.5 2.9c.1.1.1.3.1.4 0 .2-.1.3-.2.4l-2.9 3.5c-.4.4-.5 1-.2 1.5.3.5.8.8 1.4.7l4.2-.7c.2 0 .3.1.4.2.1.1.1.3.1.4l-.7 4.2c-.1.6.2 1.1.7 1.4.5.3 1.1.2 1.5-.2l2.9-3.5c.1-.1.3-.1.4-.1.2 0 .3.1.4.2l3.5 2.9c.4.4.5 1 .2 1.5.3.5.8.8 1.4.7l4.2-.7c.2 0 .3.1.4.2.1.1.1.3.1.4l-.7 4.2c-.1.6.2 1.1.7 1.4.5.3 1.1.2 1.5-.2l2.9-3.5c.1-.1.3-.1.4-.1.2 0 .3.1.4.2l3.5 2.9c.4.4.5 1 .2 1.5z"/></svg>
+                  Yelp
+                </a>
               </div>
             </MotionDiv>
           </div>
