@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { notFound } from 'next/navigation';
 import { getAllProducts, getProductBySlug } from '../../../lib/sanity';
 import Header from '../../components/Header';
