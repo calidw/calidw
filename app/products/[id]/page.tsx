@@ -1,29 +1,10 @@
 export const runtime = 'edge';
 import { notFound } from 'next/navigation';
-import { getAllProducts, getProductBySlug } from '../../../lib/sanity';
+import { getProductBySlug } from '../../../lib/sanity';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ProductDetail from '../../components/ProductDetail';
 import { Product } from '../../data/products';
-
-// Define the Sanity product type
-interface SanityProduct {
-  _id: string;
-  name: string;
-  slug: string;
-  description: string;
-  imageUrl: string;
-  gallery?: string[];
-  category: 'door' | 'window';
-  features?: string[];
-  materials?: string[];
-  inStock: boolean;
-  titleTwentyFourCompliant?: boolean;
-  seo?: {
-    title?: string;
-    description?: string;
-  };
-}
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const product = await getProductBySlug(params.id);
