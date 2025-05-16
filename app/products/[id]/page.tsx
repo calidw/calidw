@@ -41,17 +41,6 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   };
 }
 
-export async function generateStaticParams() {
-  const products = await getAllProducts();
-  
-  // Filter out any products that don't have a valid slug
-  return products
-    .filter((product: SanityProduct) => product && product.slug)
-    .map((product: SanityProduct) => ({
-      id: product.slug,
-    }));
-}
-
 export default async function ProductPage({ params }: { params: { id: string } }) {
   const product = await getProductBySlug(params.id);
   
