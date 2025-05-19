@@ -1,4 +1,5 @@
 import { createClient } from 'next-sanity';
+import imageUrlBuilder from '@sanity/image-url';
 
 // Debug environment variables
 console.log('Environment Check:', {
@@ -19,15 +20,25 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   apiVersion: '2024-03-19', // Use today's date or your preferred version
-  useCdn: process.env.NODE_ENV === 'production',
+  // Disable caching to ensure fresh data with every request
+  // This helps prevent stale data issues that might occur in production
+  useCdn: false,
   token: process.env.SANITY_API_TOKEN, // Add token if you need authenticated requests
   perspective: 'published',
 });
 
+// Set up the image URL builder
+const builder = imageUrlBuilder(client);
+
+// Helper function to build image URLs
+export function urlFor(source: any) {
+  return builder.image(source);
+}
+
 // Debug function to test Sanity connection
 async function testSanityConnection() {
   try {
-    const result = await client.fetch('*[_type == "system"][0]');
+    const result = await client.fetch('*[_id == "system" || _type == "system"][0]');
     console.log('Sanity connection test:', result ? 'Success' : 'No data returned');
     return true;
   } catch (error) {
@@ -103,11 +114,18 @@ export async function getProducts() {
       _id,
       name,
       description,
-      "image": image.asset->url,
+      image,
+      "imageUrl": image.asset->url,
       "slug": slug.current,
+      category,
       price,
+      inStock,
+      titleTwentyFourCompliant,
+      gallery,
       features,
-      specifications
+      materials,
+      specifications,
+      seo
     }`;
     
     console.log('Executing products query...');
@@ -127,5 +145,103 @@ export async function getProducts() {
       query: sanityError?.query
     });
     return [];
+  }
+}
+
+export async function getProductBySlug(slug: string) {
+  console.log(`Fetching product with slug: ${slug}`);
+  
+  try {
+    const query = `*[_type == "product" && slug.current == $slug][0] {
+      _id,
+      name,
+      description,
+      image,
+      "imageUrl": image.asset->url,
+      "slug": slug.current,
+      category,
+      price,
+      inStock,
+      titleTwentyFourCompliant,
+      gallery[]{
+        "url": asset->url,
+        "alt": alt
+      },
+      features,
+      materials,
+      specifications,
+      seo
+    }`;
+    
+    console.log('Executing product by slug query...');
+    const result = await client.fetch(query, { slug });
+    
+    if (!result) {
+      console.warn(`No product found with slug: ${slug}`);
+      return null;
+    }
+    
+    console.log(`Product found: ${result.name}`);
+    return result;
+  } catch (error: unknown) {
+    const sanityError = error as SanityError;
+    console.error('Error fetching product by slug:', {
+      message: sanityError?.message || 'Unknown error',
+      stack: sanityError?.stack,
+      query: sanityError?.query,
+      slug
+    });
+    return null;
+  }
+}
+
+export async function getAboutPageData() {
+  console.log('Fetching about page data...');
+  
+  try {
+    const query = `*[_type == "aboutPage"][0] {
+      heroSection {
+        heading,
+        subheading,
+        blurIntensity
+      },
+      storySection {
+        heading,
+        content,
+        "image": image.asset->url
+      },
+      values[] {
+        title,
+        description,
+        iconName
+      },
+      serviceAreas[] {
+        name,
+        description
+      },
+      expertise {
+        windowSpecializations,
+        doorSpecializations
+      }
+    }`;
+    
+    console.log('Executing about page query...');
+    const result = await client.fetch(query);
+    
+    if (!result) {
+      console.warn('No about page data found in Sanity');
+      return {};
+    }
+    
+    console.log('About page data found');
+    return result;
+  } catch (error: unknown) {
+    const sanityError = error as SanityError;
+    console.error('Error fetching about page data:', {
+      message: sanityError?.message || 'Unknown error',
+      stack: sanityError?.stack,
+      query: sanityError?.query
+    });
+    return {};
   }
 } 
