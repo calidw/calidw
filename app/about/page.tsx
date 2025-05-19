@@ -77,16 +77,16 @@ export default async function AboutPage() {
               <p className="text-lg lg:text-xl text-slate-300 leading-relaxed">
                 {aboutData?.heroSection?.subheading || "We're passionate about transforming homes and businesses with quality doors and windows that combine beauty, functionality, and energy efficiency."}
               </p>
-              <div className="mt-6 flex justify-center">
+              <div className="mt-8 flex justify-center">
                 <a
                   href="https://www.yelp.com/biz/cali-doors-and-windows-glendale?osq=cali+doors+and+windows&override_cta=Get+pricing+%26+availability"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#d32323] to-[#b80000] hover:from-[#b80000] hover:to-[#d32323] text-white font-extrabold rounded-full shadow-lg transition-all duration-300 text-base ring-2 ring-white/10 focus:outline-none focus:ring-4 focus:ring-red-400"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-[#d32323] to-[#b80000] hover:from-[#b80000] hover:to-[#d32323] text-white font-bold rounded-full shadow-lg transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-red-400"
                   aria-label="Read our reviews on Yelp"
                 >
-                  <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.5 10.5c-.3-.5-.8-.8-1.4-.7l-4.2.7c-.2 0-.3-.1-.4-.2-.1-.1-.1-.3-.1-.4l.7-4.2c.1-.6-.2-1.1-.7-1.4-.5-.3-1.1-.2-1.5.2l-2.9 3.5c-.1.1-.3.1-.4.1-.2 0-.3-.1-.4-.2l-3.5-2.9c-.4-.4-1-.5-1.5-.2-.5.3-.8.8-.7 1.4l.7 4.2c0 .2-.1.3-.2.4-.1.1-.3.1-.4.1l-4.2-.7c-.6-.1-1.1.2-1.4.7-.3.5-.2 1.1.2 1.5l3.5 2.9c.1.1.1.3.1.4 0 .2-.1.3-.2.4l-2.9 3.5c-.4.4-.5 1-.2 1.5.3.5.8.8 1.4.7l4.2-.7c.2 0 .3.1.4.2.1.1.1.3.1.4l-.7 4.2c-.1.6.2 1.1.7 1.4.5.3 1.1.2 1.5-.2l2.9-3.5c.1-.1.3-.1.4-.1.2 0 .3.1.4.2l3.5 2.9c.4.4 1 .5 1.5.2.5-.3.8-.8.7-1.4l-.7-4.2c0-.2.1-.3.2-.4.1-.1.3-.1.4-.1l4.2.7c.6.1 1.1-.2 1.4-.7.3-.5.2-1.1-.2-1.5l-3.5-2.9c-.1-.1-.1-.3-.1-.4 0-.2.1-.3.2-.4l2.9-3.5c.4-.4.5-1 .2-1.5z"/></svg>
-                  <span className="tracking-wide">Yelp Reviews</span>
+                  <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.5 10.5c-.3-.5-.8-.8-1.4-.7l-4.2.7c-.2 0-.3-.1-.4-.2-.1-.1-.1-.3-.1-.4l.7-4.2c.1-.6-.2-1.1-.7-1.4-.5-.3-1.1-.2-1.5.2l-2.9 3.5c-.1.1-.3.1-.4.1-.2 0-.3-.1-.4-.2l-3.5-2.9c-.4-.4-1-.5-1.5-.2-.5.3-.8.8-.7 1.4l.7 4.2c0 .2-.1.3-.2.4-.1.1-.3.1-.4.1l-4.2-.7c-.6-.1-1.1.2-1.4.7-.3.5-.2 1.1.2 1.5l3.5 2.9c.1.1.1.3.1.4 0 .2-.1.3-.2.4l-2.9 3.5c-.4.4-.5 1-.2 1.5.3.5.8.8 1.4.7l4.2-.7c.2 0 .3.1.4.2.1.1.1.3.1.4l-.7 4.2c-.1.6.2 1.1.7 1.4.5.3 1.1.2 1.5-.2l2.9-3.5c.1-.1.3-.1.4-.1.2 0 .3.1.4.2l3.5 2.9c.4.4 1 .5 1.5.2.5-.3.8-.8.7-1.4l-.7-4.2c0-.2.1-.3.2-.4.1-.1.3-.1.4-.1l4.2.7c.6.1 1.1-.2 1.4-.7.3-.5.2-1.1-.2-1.5l-3.5-2.9c-.1-.1-.1-.3-.1-.4 0-.2.1-.3.2-.4l2.9-3.5c.4-.4.5-1 .2-1.5z"/></svg>
+                  <span className="tracking-wide">Read Our Yelp Reviews</span>
                 </a>
               </div>
             </div>

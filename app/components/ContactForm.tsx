@@ -29,8 +29,8 @@ interface HubSpotError {
 }
 
 // HubSpot form submission constants
-const PORTAL_ID = '242702836';
-const FORM_GUID = '70dec8ab-a828-4664-8d0c-f77840902b61';
+const PORTAL_ID = '242822381';
+const FORM_GUID = 'f0f6dcad-13d4-472b-abcd-6003ec6f5314';
 const HUBSPOT_API_URL = `https://api.hsforms.com/submissions/v3/integration/submit/${PORTAL_ID}/${FORM_GUID}`;
 
 // Animation variants
@@ -100,12 +100,11 @@ const ContactForm = () => {
           submittedAt: Date.now(),
           fields: [
             { name: 'firstname', value: firstName },
-            { name: 'lastname', value: lastName || ' ' },
             { name: 'email', value: formData.email },
-            { name: 'phone', value: formData.phone || '' },
-            { name: 'messages', value: formData.details },
-            { name: 'i_am_interested_in___', value: formData.interest },
-            { name: 'preferred_contact_method__', value: formData.preferredContact }
+            { name: 'phone_number_', value: formData.phone || '' },
+            { name: 'details_', value: formData.details },
+            { name: 'i_am_interested_in_', value: formData.interest },
+            { name: 'preferred_contact_method_', value: formData.preferredContact }
           ],
           context: {
             pageUri: window.location.href,
@@ -354,8 +353,8 @@ const ContactForm = () => {
                 aria-describedby={errors.preferredContact ? "preferredContact-error" : undefined}
               >
                 <option value="" disabled>Select an option...</option>
-                <option value="Email">Email</option>
                 <option value="Phone">Phone</option>
+                <option value="Email">Email</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                 <svg className="h-5 w-5 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
