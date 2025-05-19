@@ -30,8 +30,16 @@ export const client = createClient({
 // Set up the image URL builder
 const builder = imageUrlBuilder(client);
 
+// Define type for Sanity image reference
+interface SanityImageSource {
+  asset?: {
+    _ref?: string;
+  };
+  [key: string]: unknown;
+}
+
 // Helper function to build image URLs
-export function urlFor(source: any) {
+export function urlFor(source: SanityImageSource) {
   return builder.image(source);
 }
 
