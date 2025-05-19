@@ -1,5 +1,12 @@
 import { createClient } from 'next-sanity';
 
+// Debug environment variables
+console.log('Environment Check:', {
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ? 'Set' : 'Not Set',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ? 'Set' : 'Not Set',
+  nodeEnv: process.env.NODE_ENV,
+});
+
 if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
   throw new Error('Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID');
 }
@@ -13,48 +20,104 @@ export const client = createClient({
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   apiVersion: '2024-03-19', // Use today's date or your preferred version
   useCdn: process.env.NODE_ENV === 'production',
+  token: process.env.SANITY_API_TOKEN, // Add token if you need authenticated requests
+  perspective: 'published',
 });
 
-export async function getGalleryItems() {
+// Debug function to test Sanity connection
+async function testSanityConnection() {
   try {
-    return await client.fetch(`
-      *[_type == "galleryItem"] {
-        _id,
-        title,
-        description,
-        "image": image.asset->url,
-        "fullSizeImage": fullSizeImage.asset->,
-        category->{name},
-        projectDetails,
-        "relatedProducts": relatedProducts[]->{
-          _id,
-          name,
-          "slug": slug.current
-        }
-      }
-    `);
+    const result = await client.fetch('*[_type == "system"][0]');
+    console.log('Sanity connection test:', result ? 'Success' : 'No data returned');
+    return true;
   } catch (error) {
-    console.error('Error fetching gallery items:', error);
+    console.error('Sanity connection test failed:', error);
+    return false;
+  }
+}
+
+export async function getGalleryItems() {
+  console.log('Fetching gallery items...');
+  
+  // Test connection first
+  const isConnected = await testSanityConnection();
+  if (!isConnected) {
+    console.error('Failed to connect to Sanity, using fallback data');
+    return [];
+  }
+
+  try {
+    const query = `*[_type == "galleryItem"] {
+      _id,
+      title,
+      description,
+      "image": image.asset->url,
+      "fullSizeImage": fullSizeImage.asset->,
+      category->{name},
+      projectDetails,
+      "relatedProducts": relatedProducts[]->{
+        _id,
+        name,
+        "slug": slug.current
+      }
+    }`;
+    
+    console.log('Executing gallery query...');
+    const result = await client.fetch(query);
+    console.log(`Gallery items fetched: ${result?.length || 0} items`);
+    
+    if (!result || result.length === 0) {
+      console.warn('No gallery items found in Sanity');
+    }
+    
+    return result;
+  } catch (error: any) {
+    console.error('Error fetching gallery items:', {
+      message: error?.message || 'Unknown error',
+      stack: error?.stack,
+      query: error?.query
+    });
     return [];
   }
 }
 
 export async function getProducts() {
+  console.log('Fetching products...');
+  
+  // Test connection first
+  const isConnected = await testSanityConnection();
+  if (!isConnected) {
+    console.error('Failed to connect to Sanity, using fallback data');
+    return [];
+  }
+
   try {
-    return await client.fetch(`
-      *[_type == "product"] {
-        _id,
-        name,
-        description,
-        "image": image.asset->url,
-        "slug": slug.current,
-        price,
-        features,
-        specifications
-      }
-    `);
-  } catch (error) {
-    console.error('Error fetching products:', error);
+    const query = `*[_type == "product"] {
+      _id,
+      name,
+      description,
+      "image": image.asset->url,
+      "slug": slug.current,
+      price,
+      features,
+      specifications
+    }`;
+    
+    console.log('Executing products query...');
+    const result = await client.fetch(query);
+    console.log(`Products fetched: ${result?.length || 0} items`);
+    
+    if (!result || result.length === 0) {
+      console.warn('No products found in Sanity');
+    }
+    
+    return result;
+  } catch (error: any) {
+    console.error('Error fetching products:', {
+      message: error?.message || 'Unknown error',
+      stack: error?.stack,
+      query: error?.query
+    });
     return [];
   }
 } 
