@@ -36,6 +36,12 @@ async function testSanityConnection() {
   }
 }
 
+interface SanityError {
+  message?: string;
+  stack?: string;
+  query?: string;
+}
+
 export async function getGalleryItems() {
   console.log('Fetching gallery items...');
   
@@ -71,11 +77,12 @@ export async function getGalleryItems() {
     }
     
     return result;
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const sanityError = error as SanityError;
     console.error('Error fetching gallery items:', {
-      message: error?.message || 'Unknown error',
-      stack: error?.stack,
-      query: error?.query
+      message: sanityError?.message || 'Unknown error',
+      stack: sanityError?.stack,
+      query: sanityError?.query
     });
     return [];
   }
@@ -112,11 +119,12 @@ export async function getProducts() {
     }
     
     return result;
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const sanityError = error as SanityError;
     console.error('Error fetching products:', {
-      message: error?.message || 'Unknown error',
-      stack: error?.stack,
-      query: error?.query
+      message: sanityError?.message || 'Unknown error',
+      stack: sanityError?.stack,
+      query: sanityError?.query
     });
     return [];
   }
