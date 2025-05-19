@@ -90,10 +90,9 @@ const ContactForm = () => {
       setIsSubmitting(true);
       
       try {
-        // Extract first and last name
+        // Extract first name only
         const nameParts = formData.name.trim().split(' ');
         const firstName = nameParts[0];
-        const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
         
         // Prepare the data for HubSpot
         const formattedData = {

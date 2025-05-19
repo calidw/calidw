@@ -1,0 +1,156 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://calidw.com/#business",
+      "name": "Cali Door & Window",
+      "url": "https://calidw.com",
+      "logo": "https://calidw.com/calidw.png",
+      "image": "https://calidw.com/images/og-image.jpg",
+      "description": "Premium quality doors and windows for residential and commercial properties. Serving the greater Los Angeles area with expert installation and energy-efficient solutions.",
+      "priceRange": "$$",
+      "telephone": "+1-818-282-3437",
+      "email": "sales@calidw.com",
+      "areaServed": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+          "@type": "GeoCoordinates",
+          "latitude": "34.1425",
+          "longitude": "-118.2551"
+        },
+        "geoRadius": "50 mi"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "3746 Foothill Boulevard #1254",
+        "addressLocality": "Glendale",
+        "addressRegion": "CA",
+        "postalCode": "91214",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "34.1425",
+        "longitude": "-118.2551"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "09:00",
+          "closes": "14:00"
+        }
+      ],
+      "sameAs": [
+        "https://www.facebook.com/calidw",
+        "https://www.instagram.com/calidw",
+        "https://www.yelp.com/biz/cali-doors-and-windows-glendale"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Door and Window Products",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Premium Doors",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Product",
+                  "name": "Entry Doors",
+                  "description": "Beautiful and secure entry doors to enhance your home's curb appeal."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Product",
+                  "name": "Patio Doors",
+                  "description": "Sliding glass and French patio doors that connect indoor and outdoor living spaces."
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Premium Windows",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Product",
+                  "name": "Energy-Efficient Windows",
+                  "description": "Energy-saving windows that reduce heating and cooling costs."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Product",
+                  "name": "Custom Windows",
+                  "description": "Custom-designed windows for unique architectural styles."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://calidw.com/#website",
+      "url": "https://calidw.com",
+      "name": "Cali Door & Window",
+      "description": "Premium doors and windows for your California home",
+      "publisher": {
+        "@id": "https://calidw.com/#business"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://calidw.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://calidw.com/#webpage",
+      "url": "https://calidw.com",
+      "name": "Cali Door & Window - Premium Doors and Windows for Your Home",
+      "isPartOf": {
+        "@id": "https://calidw.com/#website"
+      },
+      "about": {
+        "@id": "https://calidw.com/#business"
+      },
+      "description": "Discover premium quality doors and windows for your home with expert installation and exceptional customer service.",
+      "inLanguage": "en-US",
+      "breadcrumb": {
+        "@id": "https://calidw.com/#breadcrumb"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://calidw.com/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "WebPage",
+            "@id": "https://calidw.com/",
+            "url": "https://calidw.com/",
+            "name": "Home"
+          }
+        }
+      ]
+    }
+  ]
+}

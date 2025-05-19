@@ -1,0 +1,41 @@
+# Cali Door & Window - robots.txt
+# https://calidw.com/
+
+User-agent: *
+Allow: /
+
+# Allow search engines to access all content directories
+Allow: /products/
+Allow: /gallery/
+Allow: /about/
+Allow: /contact/
+Allow: /faq/
+Allow: /testimonials/
+
+# Block access to API routes, admin paths, and other private content
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /server-sitemap.xml
+
+# Block unintentional patterns
+Disallow: /*?
+Disallow: /*.json$
+Disallow: /*wp-admin/
+Disallow: /*wp-login.php
+
+# Crawl delay and limitations for non-Google crawlers
+User-agent: AhrefsBot
+Crawl-delay: 5
+
+User-agent: SemrushBot
+Crawl-delay: 5
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: PetalBot
+Crawl-delay: 5
+
+# sitemap URLs
+Sitemap: https://calidw.com/sitemap.xml

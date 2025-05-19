@@ -88,11 +88,18 @@ export default function ProductGrid({
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {displayedProducts.map((product) => (
-            <ProductCard 
-              key={product.id} 
-              product={product} 
-              showPrice={showPrice} 
-            />
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ProductCard 
+                product={product} 
+                showPrice={showPrice} 
+              />
+            </motion.div>
           ))}
         </motion.div>
       </AnimatePresence>
