@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getAllProducts } from '../../lib/sanity';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
