@@ -95,10 +95,10 @@ export default function ProductGrid({
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
             >
-              <ProductCard 
-                product={product} 
-                showPrice={showPrice} 
-              />
+            <ProductCard 
+              product={product} 
+              showPrice={showPrice} 
+            />
             </motion.div>
           ))}
         </motion.div>

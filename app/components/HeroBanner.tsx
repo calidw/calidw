@@ -221,8 +221,8 @@ const HeroBanner = ({
               <a 
                 href={displayButtonPrimaryLink || "/contact"} 
                 className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
-              >
-                {displayButtonPrimary}
+                >
+                  {displayButtonPrimary}
               </a>
               
               {/* Secondary Button - Call Us */}
@@ -233,7 +233,7 @@ const HeroBanner = ({
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
+                    </svg>
                   {buttonSecondary}
                 </a>
               )}
