@@ -11,6 +11,9 @@ export const metadata = {
   description: 'Learn about Cali Door & Window and our commitment to quality, service, and customer satisfaction.',
 };
 
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 // Define types for our Sanity data
 interface AboutPageData {
   heroSection?: {
