@@ -28,7 +28,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12">
           {/* Company Info & Logo */}
           <div className="lg:col-span-4">
-            <Link href="/" className="inline-flex items-center mb-6">
+            <Link href="/" className="inline-flex items-center mb-2">
               <div className="relative w-36 h-36 flex-shrink-0 mr-3">
                 <Image
                   src="/calidw.png"
@@ -38,6 +38,9 @@ const Footer = () => {
                 />
               </div>
             </Link>
+            <p className="text-sm font-semibold text-slate-800 mb-6">
+              Contractor License: 1138391
+            </p>
             <p className="text-base text-slate-700 leading-relaxed mb-6">
               Providing premium quality doors and windows with expert installation and exceptional service for discerning homeowners and professionals.
             </p>
