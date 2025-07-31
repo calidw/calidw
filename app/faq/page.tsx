@@ -4,7 +4,6 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { getFaqPageData } from '../../lib/sanity';
 
 // FAQ Data Structure
