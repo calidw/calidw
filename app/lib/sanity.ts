@@ -10,10 +10,6 @@ console.log('Environment Check:', {
   datasetValue: process.env.NEXT_PUBLIC_SANITY_DATASET,
 });
 
-// Fallback values for when Sanity is not configured
-const FALLBACK_PROJECT_ID = 'fallback';
-const FALLBACK_DATASET = 'production';
-
 // Validate environment variables more strictly
 function isValidSanityProjectId(id: string | undefined): boolean {
   return Boolean(id && id.length > 0 && id !== 'Set' && id !== 'fallback' && /^[a-z0-9]+$/.test(id));
