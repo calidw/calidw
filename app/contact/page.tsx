@@ -1,16 +1,24 @@
+'use client';
+
+import { useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ContactForm from '../components/ContactForm';
 import ContactInfoDisplay from '../components/ContactInfoDisplay';
-import { getContactInfo, type ContactInfo } from '../lib/sanity';
+import { useContactInfo } from '../hooks/useContactInfo';
 
-export const metadata = {
-  title: 'Contact Us | Cali Door & Window',
-  description: 'Get in touch with our team for inquiries, quotes, or information about our door and window products and services.',
-};
-
-export default async function ContactPage() {
-  const contactInfo: ContactInfo | null = await getContactInfo();
+export default function ContactPage() {
+  const { contactInfo, loading, error } = useContactInfo();
+  
+  // Set document title on the client side
+  useEffect(() => {
+    document.title = 'Contact Us | Cali Door & Window';
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Get in touch with our team for inquiries, quotes, or information about our door and window products and services.');
+    }
+  }, []);
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -54,7 +62,17 @@ export default async function ContactPage() {
                   
                   <div className="relative">
                     <h2 className="text-2xl font-bold mb-8">Contact Information</h2>
-                    <ContactInfoDisplay contactInfo={contactInfo} theme="dark" />
+                    {loading ? (
+                      <div className="flex items-center justify-center py-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                      </div>
+                    ) : error ? (
+                      <div className="text-red-300 py-4">
+                        Failed to load contact information. Please try again later.
+                      </div>
+                    ) : (
+                      <ContactInfoDisplay contactInfo={contactInfo} theme="dark" />
+                    )}
                   </div>
                 </div>
               </div>
