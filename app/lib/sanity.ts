@@ -8,27 +8,31 @@ console.log('Environment Check:', {
   nodeEnv: process.env.NODE_ENV,
 });
 
-if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
-  throw new Error('Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID');
-}
+// Fallback values for when Sanity is not configured
+const FALLBACK_PROJECT_ID = 'fallback';
+const FALLBACK_DATASET = 'production';
 
-if (!process.env.NEXT_PUBLIC_SANITY_DATASET) {
-  throw new Error('Missing environment variable: NEXT_PUBLIC_SANITY_DATASET');
-}
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || FALLBACK_PROJECT_ID;
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || FALLBACK_DATASET;
 
-export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+// Only create client if we have real Sanity credentials
+const hasSanityConfig = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID && 
+                       process.env.NEXT_PUBLIC_SANITY_DATASET &&
+                       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== FALLBACK_PROJECT_ID;
+
+export const client = hasSanityConfig ? createClient({
+  projectId,
+  dataset,
   apiVersion: '2024-03-19', // Use today's date or your preferred version
   // Disable caching to ensure fresh data with every request
   // This helps prevent stale data issues that might occur in production
   useCdn: false,
   token: process.env.SANITY_API_TOKEN, // Add token if you need authenticated requests
   perspective: 'published',
-});
+}) : null;
 
 // Set up the image URL builder
-const builder = imageUrlBuilder(client);
+const builder = client ? imageUrlBuilder(client) : null;
 
 // Define type for Sanity image reference
 interface SanityImageSource {
@@ -40,11 +44,20 @@ interface SanityImageSource {
 
 // Helper function to build image URLs
 export function urlFor(source: SanityImageSource) {
+  if (!builder) {
+    // Return a placeholder URL when Sanity is not configured
+    return { url: () => '/placeholder-image.jpg' };
+  }
   return builder.image(source);
 }
 
 // Debug function to test Sanity connection
 async function testSanityConnection() {
+  if (!client) {
+    console.log('Sanity client not configured, using fallback data');
+    return false;
+  }
+  
   try {
     const result = await client.fetch('*[_id == "system" || _type == "system"][0]');
     console.log('Sanity connection test:', result ? 'Success' : 'No data returned');
@@ -95,6 +108,12 @@ export interface ContactInfo {
 export async function getGalleryItems() {
   console.log('Fetching gallery items...');
   
+  // Check if client is available
+  if (!client) {
+    console.warn('Sanity client not configured, returning empty array');
+    return [];
+  }
+  
   // Test connection first
   const isConnected = await testSanityConnection();
   if (!isConnected) {
@@ -141,10 +160,8 @@ export async function getGalleryItems() {
 export async function getProducts() {
   console.log('Fetching products...');
   
-  // Test connection first
-  const isConnected = await testSanityConnection();
-  if (!isConnected) {
-    console.error('Failed to connect to Sanity, using fallback data');
+  if (!client) {
+    console.warn('Sanity client not configured, returning empty array');
     return [];
   }
 
@@ -153,18 +170,11 @@ export async function getProducts() {
       _id,
       name,
       description,
-      image,
-      "imageUrl": image.asset->url,
       "slug": slug.current,
-      category,
-      price,
-      inStock,
-      titleTwentyFourCompliant,
-      gallery,
-      features,
-      materials,
+      "image": image.asset->url,
+      category->{name},
       specifications,
-      seo
+      "keyFeatures": keyFeatures[]
     }`;
     
     console.log('Executing products query...');
@@ -189,6 +199,11 @@ export async function getProducts() {
 
 export async function getProductBySlug(slug: string) {
   console.log(`Fetching product with slug: ${slug}`);
+  
+  if (!client) {
+    console.warn('Sanity client not configured, returning null');
+    return null;
+  }
   
   try {
     const query = `*[_type == "product" && slug.current == $slug][0] {
@@ -236,6 +251,11 @@ export async function getProductBySlug(slug: string) {
 
 export async function getAboutPageData() {
   console.log('Fetching about page data...');
+  
+  if (!client) {
+    console.warn('Sanity client not configured, returning empty object');
+    return {};
+  }
   
   try {
     const query = `*[_type == "aboutPage"][0] {
@@ -287,6 +307,11 @@ export async function getAboutPageData() {
 
 export async function getContactInfo() {
   console.log('Fetching contact info...');
+  
+  if (!client) {
+    console.warn('Sanity client not configured, returning null');
+    return null;
+  }
   
   try {
     const query = `*[_type == "contactInfo"][0] {
