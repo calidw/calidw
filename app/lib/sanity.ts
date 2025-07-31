@@ -6,21 +6,37 @@ console.log('Environment Check:', {
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ? 'Set' : 'Not Set',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ? 'Set' : 'Not Set',
   nodeEnv: process.env.NODE_ENV,
+  projectIdValue: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  datasetValue: process.env.NEXT_PUBLIC_SANITY_DATASET,
 });
 
 // Fallback values for when Sanity is not configured
 const FALLBACK_PROJECT_ID = 'fallback';
 const FALLBACK_DATASET = 'production';
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || FALLBACK_PROJECT_ID;
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || FALLBACK_DATASET;
+// Validate environment variables more strictly
+function isValidSanityProjectId(id: string | undefined): boolean {
+  return Boolean(id && id.length > 0 && id !== 'Set' && id !== 'fallback' && /^[a-z0-9]+$/.test(id));
+}
 
-// Only create client if we have real Sanity credentials
-const hasSanityConfig = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID && 
-                       process.env.NEXT_PUBLIC_SANITY_DATASET &&
-                       process.env.NEXT_PUBLIC_SANITY_PROJECT_ID !== FALLBACK_PROJECT_ID;
+function isValidSanityDataset(dataset: string | undefined): boolean {
+  return Boolean(dataset && dataset.length > 0 && dataset !== 'Set' && /^[a-z0-9_-]+$/.test(dataset));
+}
 
-export const client = hasSanityConfig ? createClient({
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+
+// Only create client if we have valid Sanity credentials
+const hasSanityConfig = isValidSanityProjectId(projectId) && isValidSanityDataset(dataset);
+
+console.log('Sanity Config Validation:', {
+  projectIdValid: isValidSanityProjectId(projectId),
+  datasetValid: isValidSanityDataset(dataset),
+  hasSanityConfig,
+  willCreateClient: hasSanityConfig && projectId && dataset
+});
+
+export const client = hasSanityConfig && projectId && dataset ? createClient({
   projectId,
   dataset,
   apiVersion: '2024-03-19', // Use today's date or your preferred version
