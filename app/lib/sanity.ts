@@ -6,8 +6,11 @@ console.log('Environment Check:', {
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ? 'Set' : 'Not Set',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ? 'Set' : 'Not Set',
   nodeEnv: process.env.NODE_ENV,
+  // Show actual values and their length/characters in production for debugging
   projectIdValue: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   datasetValue: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  datasetLength: process.env.NEXT_PUBLIC_SANITY_DATASET?.length,
+  datasetCharCodes: process.env.NEXT_PUBLIC_SANITY_DATASET?.split('').map(c => c.charCodeAt(0)),
 });
 
 // Validate environment variables more strictly
@@ -16,11 +19,13 @@ function isValidSanityProjectId(id: string | undefined): boolean {
 }
 
 function isValidSanityDataset(dataset: string | undefined): boolean {
-  return Boolean(dataset && dataset.length > 0 && dataset !== 'Set' && /^[a-z0-9_-]+$/.test(dataset));
+  // Trim whitespace and validate
+  const trimmedDataset = dataset?.trim();
+  return Boolean(trimmedDataset && trimmedDataset.length > 0 && trimmedDataset !== 'Set' && /^[a-z0-9_-]+$/.test(trimmedDataset));
 }
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+const dataset = (process.env.NEXT_PUBLIC_SANITY_DATASET || 'production').trim();
 
 // Only create client if we have valid Sanity credentials
 const hasSanityConfig = isValidSanityProjectId(projectId) && isValidSanityDataset(dataset);
