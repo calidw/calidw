@@ -61,6 +61,37 @@ interface SanityError {
   query?: string;
 }
 
+export interface ContactInfo {
+  address?: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    show: boolean;
+  };
+  phone?: {
+    number: string;
+    show: boolean;
+  };
+  email?: {
+    address: string;
+    show: boolean;
+  };
+  hours?: {
+    schedule: string[];
+    show: boolean;
+  };
+  mapLocation?: {
+    lat: number;
+    lng: number;
+  };
+  socialLinks?: Array<{
+    platform: string;
+    url: string;
+    show: boolean;
+  }>;
+}
+
 export async function getGalleryItems() {
   console.log('Fetching gallery items...');
   
@@ -251,5 +282,61 @@ export async function getAboutPageData() {
       query: sanityError?.query
     });
     return {};
+  }
+}
+
+export async function getContactInfo() {
+  console.log('Fetching contact info...');
+  
+  try {
+    const query = `*[_type == "contactInfo"][0] {
+      address {
+        street,
+        city,
+        state,
+        zipCode,
+        show
+      },
+      phone {
+        number,
+        show
+      },
+      email {
+        address,
+        show
+      },
+      hours {
+        schedule,
+        show
+      },
+      mapLocation {
+        lat,
+        lng
+      },
+      socialLinks[] {
+        platform,
+        url,
+        show
+      }
+    }`;
+    
+    console.log('Executing contact info query...');
+    const result = await client.fetch(query);
+    
+    if (!result) {
+      console.warn('No contact info found in Sanity');
+      return null;
+    }
+    
+    console.log('Contact info found');
+    return result;
+  } catch (error: unknown) {
+    const sanityError = error as SanityError;
+    console.error('Error fetching contact info:', {
+      message: sanityError?.message || 'Unknown error',
+      stack: sanityError?.stack,
+      query: sanityError?.query
+    });
+    return null;
   }
 } 

@@ -1,14 +1,16 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ContactForm from '../components/ContactForm';
-import { PhoneIcon, EnvelopeIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
+import ContactInfoDisplay from '../components/ContactInfoDisplay';
+import { getContactInfo, type ContactInfo } from '../lib/sanity';
 
 export const metadata = {
   title: 'Contact Us | Cali Door & Window',
   description: 'Get in touch with our team for inquiries, quotes, or information about our door and window products and services.',
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const contactInfo: ContactInfo | null = await getContactInfo();
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -52,71 +54,7 @@ export default function ContactPage() {
                   
                   <div className="relative">
                     <h2 className="text-2xl font-bold mb-8">Contact Information</h2>
-                    
-                    <div className="space-y-8">
-                      <div className="flex">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mr-4">
-                          <MapPinIcon className="h-6 w-6 text-red-400" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-lg text-white mb-2">
-                            Address
-                          </h3>
-                          <address className="not-italic text-slate-300 leading-relaxed">
-                            3746 Foothill Boulevard #1254<br />
-                            Glendale, CA 91214
-                          </address>
-                        </div>
-                      </div>
-                      
-                      <div className="flex">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mr-4">
-                          <ClockIcon className="h-6 w-6 text-red-400" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-lg text-white mb-2">
-                            Working Hours
-                          </h3>
-                          <p className="text-slate-300 leading-relaxed">
-                            Mon - Fri: 9:00 AM - 6:00 PM<br />
-                            Saturday: 9:00 AM - 2:00 PM<br />
-                            Sunday: Closed
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mr-4">
-                          <PhoneIcon className="h-6 w-6 text-red-400" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-lg text-white mb-2">
-                            Call Us
-                          </h3>
-                          <p className="text-slate-300">
-                            <a href="tel:8182823437" className="hover:text-red-300 transition-colors duration-200">
-                              (818) 282-3437
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mr-4">
-                          <EnvelopeIcon className="h-6 w-6 text-red-400" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-lg text-white mb-2">
-                            Email Us
-                          </h3>
-                          <p className="text-slate-300">
-                            <a href="mailto:sales@calidw.com" className="hover:text-red-300 transition-colors duration-200">
-                              sales@calidw.com
-                            </a>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                    <ContactInfoDisplay contactInfo={contactInfo} theme="dark" />
                   </div>
                 </div>
               </div>

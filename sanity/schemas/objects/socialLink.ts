@@ -28,6 +28,12 @@ export default defineType({
       type: 'url',
       validation: Rule => Rule.required(),
     }),
+    defineField({
+      name: 'show',
+      title: 'Show This Social Link',
+      type: 'boolean',
+      initialValue: true,
+    }),
   ],
   preview: {
     select: {

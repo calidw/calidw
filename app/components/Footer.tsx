@@ -2,9 +2,25 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useContactInfo } from '../hooks/useContactInfo';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { contactInfo, loading } = useContactInfo();
+
+  // Fallback data if Sanity is not available
+  const fallbackContact = {
+    phone: {
+      number: '(818) 282-3437',
+      show: true,
+    },
+    email: {
+      address: 'sales@calidw.com',
+      show: true,
+    },
+  };
+
+  const contact = contactInfo || fallbackContact;
   
   const footerNav = {
     products: [
@@ -90,17 +106,35 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <h3 className="text-base font-semibold uppercase tracking-wider text-slate-800 mb-5">Contact Us</h3>
             <address className="not-italic text-base space-y-3 text-slate-700">
-              <p>3746 Foothill Boulevard #1254<br />Glendale, CA 91214</p>
-              <p>
-                <a href="tel:+18182823437" className="hover:text-red-800 transition-colors duration-200">
-                  (818) 282-3437
-                </a>
-              </p>
-              <p>
-                <a href="mailto:sales@calidw.com" className="hover:text-red-800 transition-colors duration-200">
-                  sales@calidw.com
-                </a>
-              </p>
+              {loading ? (
+                <div className="space-y-3">
+                  <div className="h-4 bg-slate-200 rounded animate-pulse"></div>
+                  <div className="h-4 bg-slate-200 rounded animate-pulse w-3/4"></div>
+                </div>
+              ) : (
+                <>
+                  {contact.phone?.show && (
+                    <p>
+                      <a 
+                        href={`tel:${contact.phone.number.replace(/[^\d]/g, '')}`} 
+                        className="hover:text-red-800 transition-colors duration-200"
+                      >
+                        {contact.phone.number}
+                      </a>
+                    </p>
+                  )}
+                  {contact.email?.show && (
+                    <p>
+                      <a 
+                        href={`mailto:${contact.email.address}`} 
+                        className="hover:text-red-800 transition-colors duration-200"
+                      >
+                        {contact.email.address}
+                      </a>
+                    </p>
+                  )}
+                </>
+              )}
             </address>
           </div>
         </div>

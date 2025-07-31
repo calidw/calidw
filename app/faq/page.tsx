@@ -273,66 +273,7 @@ export default function FaqPage() {
         </section>
 
         {/* Contact CTA Section */}
-        <section className="py-16 md:py-20 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-0 right-1/4 w-64 h-64 rounded-full bg-red-100 blur-3xl opacity-50"></div>
-            <div className="absolute bottom-0 left-1/4 w-64 h-64 rounded-full bg-slate-100 blur-3xl opacity-60"></div>
-          </div>
-          
-          <div className="container mx-auto px-6 lg:px-8 relative z-10">
-            <div className="max-w-3xl mx-auto">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6 }}
-                className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-slate-100 text-center"
-              >
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-8">
-                  <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                  </svg>
-                </div>
-                
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                  {pageData.ctaTitle}
-                </h2>
-                <p className="text-lg text-slate-600 mb-8">
-                  {pageData.ctaText}
-                </p>
-                
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <Link 
-                      href={pageData.ctaButtonLink} 
-                      className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-red-800 to-red-700 text-white font-semibold rounded-full shadow-md hover:bg-gradient-to-r hover:from-red-600 hover:to-red-500 transition-all duration-300 w-full sm:w-auto"
-                    >
-                      {pageData.ctaButtonText}
-                    </Link>
-                  </motion.div>
-                  
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    <a 
-                      href="tel:+18005551234" 
-                      className="inline-flex items-center justify-center px-6 py-3 border border-slate-200 bg-white text-slate-800 font-semibold rounded-full hover:border-slate-300 hover:bg-slate-50 transition-all duration-300 w-full sm:w-auto"
-                    >
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                      (800) 555-1234
-                    </a>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
+        
       </main>
       
       <Footer />
