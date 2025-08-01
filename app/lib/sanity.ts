@@ -24,7 +24,7 @@ function isValidSanityDataset(dataset: string | undefined): boolean {
   return Boolean(trimmedDataset && trimmedDataset.length > 0 && trimmedDataset !== 'Set' && /^[a-z0-9_-]+$/.test(trimmedDataset));
 }
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'ejlhmf3v';
 const dataset = (process.env.NEXT_PUBLIC_SANITY_DATASET || 'production').trim();
 
 // Only create client if we have valid Sanity credentials
