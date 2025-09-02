@@ -1,6 +1,20 @@
 import { NextResponse } from 'next/server';
 import { createClient } from 'next-sanity';
 
+export const runtime = 'edge';
+
+const testimonialProjection = `{
+  _id,
+  name,
+  quote,
+  location,
+  image,
+  rating,
+  projectType,
+  date,
+  isFeatured
+}`;
+
 // Centralized environment-safe client just for this API route
 function buildClient() {
   let projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'ejlhmf3v';
@@ -21,28 +35,10 @@ function buildClient() {
   return createClient({
     projectId,
     dataset,
-    apiVersion: '2024-03-19',
-    useCdn: true, // CDN ok for published testimonials
-    perspective: 'published'
+    apiVersion: '2023-05-03',
+    useCdn: false
   });
 }
-
-const testimonialProjection = `{
-  _id,
-  name,
-  location,
-  quote,
-  rating,
-  "image": image.asset->url,
-  projectType,
-  date,
-  isFeatured,
-  productReference->{
-    _id,
-    name,
-    "slug": slug.current
-  }
-}`;
 
 export async function GET() {
   const client = buildClient();
