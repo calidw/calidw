@@ -42,40 +42,9 @@ export interface Testimonial {
   };
 }
 
-// Fallback mock testimonials in case no data is provided
-const mockTestimonials: Testimonial[] = [
-  {
-    _id: 'test-001',
-    quote: 'Cali Door & Window transformed our home! The new windows are stunning and energy-efficient. The installation team was professional and meticulous.',
-    name: 'Sarah & Tom P.',
-    location: 'Pasadena, CA',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150&h=150&auto=format&fit=crop',
-    projectType: 'windows',
-    date: 'January 2023',
-    isFeatured: true
-  },
-  {
-    _id: 'test-002',
-    quote: 'From the initial consultation to the final walkthrough, the experience was seamless. Our new entry door is the centerpiece of our facade.',
-    name: 'Michael R.',
-    location: 'Glendale, CA',
-    rating: 5,
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&h=150&auto=format&fit=crop',
-  },
-  {
-    _id: 'test-003',
-    quote: 'We were impressed with the quality of the windows and the knowledge of the sales team. Installation was quick and clean. Highly recommend!',
-    name: 'Jennifer L.',
-    location: 'Burbank, CA',
-    rating: 4,
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&h=150&auto=format&fit=crop',
-  },
-];
-
 interface TestimonialsProps {
-  testimonials?: Testimonial[] | null; // Allow passing testimonials or use mock data, including null
-  maxItems?: number; // Optionally limit the number displayed
+  testimonials?: Testimonial[] | null;
+  maxItems?: number;
   title?: string;
   subtitle?: string;
 }
@@ -98,14 +67,51 @@ const StarRating = ({ rating }: { rating: number }) => {
 };
 
 const Testimonials = ({ 
-  testimonials = mockTestimonials,
+  testimonials = null, // Changed default to null instead of mockTestimonials
   maxItems,
   title = "What Our Clients Say",
   subtitle = "Real feedback from satisfied homeowners and partners."
 }: TestimonialsProps) => {
-  // Ensure testimonials is always an array, even if null is passed
-  const safeTestimonials = testimonials || mockTestimonials;
+  // Debug logging to see what data we're getting
+  console.log('Testimonials component props:', { 
+    testimonials: testimonials?.length || 'null/undefined', 
+    title, 
+    subtitle,
+    maxItems 
+  });
+  
+  // Only use real testimonials data - no fallback to mock data unless explicitly no data available
+  const safeTestimonials = testimonials && testimonials.length > 0 ? testimonials : [];
   const itemsToDisplay = maxItems ? safeTestimonials.slice(0, maxItems) : safeTestimonials;
+  
+  console.log('Testimonials rendering:', { 
+    safeTestimonialsLength: safeTestimonials.length,
+    itemsToDisplayLength: itemsToDisplay.length,
+    firstItem: itemsToDisplay[0]?.name,
+    firstItemImage: itemsToDisplay[0]?.image,
+    imageUrls: itemsToDisplay.map(t => ({ name: t.name, image: t.image }))
+  });
+
+  // If no testimonials available, show loading or empty state instead of mock data
+  if (!testimonials || testimonials.length === 0) {
+    return (
+      <section className="py-20 md:py-28 bg-gradient-to-b from-white to-red-50 overflow-hidden">
+        <div className="container mx-auto px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 mb-6">
+              {title}
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
+              {subtitle}
+            </p>
+            <div className="text-slate-500">
+              {testimonials === null ? 'Loading testimonials...' : 'No testimonials available at this time.'}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 md:py-28 bg-gradient-to-b from-white to-red-50 overflow-hidden">
@@ -164,13 +170,19 @@ const Testimonials = ({
                 </p>
                 
                 <footer className="mt-auto pt-6 border-t border-slate-100 flex items-center">
-                  {testimonial.image ? (
+                  {testimonial.image && testimonial.image.trim() !== '' ? (
                     <Image 
                       src={testimonial.image} 
                       alt={`${testimonial.name}`}
                       width={40}
                       height={40}
                       className="rounded-full object-cover mr-3"
+                      onError={() => {
+                        console.error('Image failed to load:', testimonial.image);
+                      }}
+                      onLoad={() => {
+                        console.log('Image loaded successfully:', testimonial.image);
+                      }}
                     />
                   ) : (
                     <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 rounded-full flex items-center justify-center text-white mr-3 text-xl font-bold">

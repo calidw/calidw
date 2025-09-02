@@ -10,7 +10,7 @@ export default defineType({
       title: 'Page Title',
       type: 'string',
       validation: Rule => Rule.required(),
-      initialValue: 'Frequently Asked Questions | Cali Door & Window',
+      initialValue: 'Frequently Asked Questions | Cali Door & Windows',
     }),
     defineField({
       name: 'heading',

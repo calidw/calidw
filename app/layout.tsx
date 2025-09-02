@@ -10,7 +10,7 @@ const schemaData = {
     {
       "@type": "LocalBusiness",
       "@id": "https://calidw.com/#business",
-      "name": "Cali Door & Window",
+      "name": "Cali Door & Windows",
       "url": "https://calidw.com",
       "logo": "https://calidw.com/calidw.png",
       "image": "https://calidw.com/images/og-image.jpg",
@@ -62,7 +62,7 @@ const schemaData = {
       "@type": "WebSite",
       "@id": "https://calidw.com/#website",
       "url": "https://calidw.com",
-      "name": "Cali Door & Window",
+      "name": "Cali Door & Windows",
       "description": "Premium doors and windows for your California home",
       "publisher": {
         "@id": "https://calidw.com/#business"
@@ -77,7 +77,7 @@ const schemaData = {
       "@type": "WebPage",
       "@id": "https://calidw.com/#webpage",
       "url": "https://calidw.com",
-      "name": "Cali Door & Window - Premium Doors and Windows for Your Home",
+      "name": "Cali Door & Windows - Premium Doors and Windows for Your Home",
       "isPartOf": {
         "@id": "https://calidw.com/#website"
       },
@@ -104,8 +104,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Cali Door & Window',
-    default: 'Cali Door & Window - Premium Doors and Windows for Your Home',
+    template: '%s | Cali Door & Windows',
+    default: 'Cali Door & Windows - Premium Doors and Windows for Your Home',
   },
   description: "Discover premium quality doors and windows for your home with expert installation and exceptional customer service.",
   keywords: "doors, windows, home improvement, energy efficient windows, sliding doors, entry doors, replacement windows, California windows, door installation, window installation",
@@ -129,7 +129,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://calidw.com',
-    siteName: 'Cali Door & Window',
+    siteName: 'Cali Door & Windows',
     title: 'Premium Doors and Windows for Your California Home',
     description: 'Elevate your home with premium quality doors and windows. Energy-efficient solutions with expert installation throughout California.',
     images: [
@@ -137,13 +137,13 @@ export const metadata: Metadata = {
         url: 'https://calidw.com/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Cali Door & Window - Premium Doors and Windows',
+        alt: 'Cali Door & Windows - Premium Doors and Windows',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Cali Door & Window - Premium Quality Doors and Windows',
+    title: 'Cali Door & Windows - Premium Quality Doors and Windows',
     description: 'Elevate your home with premium quality doors and windows. Energy-efficient solutions with expert installation throughout California.',
     images: ['https://calidw.com/images/twitter-card.jpg'],
     creator: '@calidw',

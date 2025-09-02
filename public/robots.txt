@@ -1,4 +1,4 @@
-# Cali Door & Window - robots.txt
+# Cali Door & Windows - robots.txt
 # https://calidw.com/
 
 User-agent: *

@@ -13,7 +13,7 @@ const client = sanityClient({
 // Static FAQ data to seed
 const faqData = {
   _type: 'faqPage',
-  title: 'Frequently Asked Questions | Cali Door & Window',
+  title: 'Frequently Asked Questions | Cali Door & Windows',
   heading: 'Frequently Asked Questions',
   subheading: 'Find answers to common questions about our products, services, and processes.',
   ctaTitle: 'Still have questions?',
@@ -83,7 +83,7 @@ const faqData = {
     }
   ],
   seo: {
-    title: 'Frequently Asked Questions | Cali Door & Window',
+    title: 'Frequently Asked Questions | Cali Door & Windows',
     description: 'Find answers to common questions about our windows and doors, installation process, warranty information, pricing, and maintenance.'
   }
 };

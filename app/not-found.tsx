@@ -3,8 +3,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 export const metadata = {
-  title: 'Page Not Found | Cali Door & Window',
-  description: 'The page you are looking for could not be found.',
+  title: 'Page Not Found | Cali Door & Windows',
+  description: 'The page you are looking for does not exist.'
 };
 
 export default function NotFound() {

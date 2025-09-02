@@ -12,7 +12,7 @@ export default function ContactPage() {
   
   // Set document title on the client side
   useEffect(() => {
-    document.title = 'Contact Us | Cali Door & Window';
+    document.title = 'Contact Us | Cali Door & Windows';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Get in touch with our team for inquiries, quotes, or information about our door and window products and services.');

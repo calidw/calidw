@@ -2,7 +2,8 @@
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Testimonials from '../components/Testimonials';
+import Testimonials, { Testimonial } from '../components/Testimonials';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
@@ -17,8 +18,69 @@ const fadeInUp = {
 };
 
 export default function TestimonialsPage() {
-  // In a real app, you might fetch all testimonials here if not using mock data
-  // const allTestimonials = await fetchAllTestimonials();
+  const [testimonials, setTestimonials] = useState<Testimonial[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  console.log('TestimonialsPage render:', { 
+    testimonialsCount: testimonials?.length || 'null', 
+    loading, 
+    error 
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+    console.log('TestimonialsPage: Starting fetch...');
+    
+    const fetchTestimonials = async () => {
+      try {
+        console.log('Making fetch request to /api/testimonials...');
+        const res = await fetch('/api/testimonials', { 
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
+        console.log('Fetch response received:', res.status, res.ok);
+        
+        if (!res.ok) {
+          throw new Error(`API request failed with status ${res.status}`);
+        }
+        
+        const text = await res.text();
+        console.log('Raw response text:', text.substring(0, 200) + '...');
+        
+        const json = JSON.parse(text);
+        console.log('Parsed JSON:', json);
+        
+        if (json.success && Array.isArray(json.testimonials)) {
+          console.log('Setting testimonials in state:', json.testimonials.length, 'items');
+          if (isMounted) {
+            setTestimonials(json.testimonials);
+            console.log('State updated successfully');
+          }
+        } else {
+          throw new Error(json.error || 'Invalid API response format');
+        }
+      } catch (e: unknown) {
+        console.error('Failed to load testimonials:', e);
+        if (isMounted) setError(`Unable to load testimonials: ${e instanceof Error ? e.message : 'Unknown error'}`);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+          console.log('Loading state set to false');
+        }
+      }
+    };
+
+    // Add a small delay to ensure component is mounted
+    setTimeout(fetchTestimonials, 100);
+    
+    return () => { 
+      console.log('Component unmounting, setting isMounted to false');
+      isMounted = false; 
+    };
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -46,8 +108,8 @@ export default function TestimonialsPage() {
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6">
                 Customer Testimonials
               </h1>
-              <p className="text-xl text-slate-300 leading-relaxed">
-                Hear directly from our clients about their experience with Cali Door & Window.
+                            <p className="text-xl text-slate-300 mb-4">
+                Hear directly from our clients about their experience with Cali Door & Windows.
               </p>
             </motion.div>
             
@@ -81,9 +143,7 @@ export default function TestimonialsPage() {
 
         {/* Use the Testimonials component to display all items */}
         <Testimonials 
-          title="" // Hide the default title/subtitle within the component 
-          subtitle="" 
-          // Pass fetched data here when using a CMS later
+          testimonials={testimonials}
         />
         
         {/* Additional CTA Section */}
@@ -99,7 +159,7 @@ export default function TestimonialsPage() {
                 Ready to Start Your Project?
               </h2>
               <p className="text-xl text-slate-300 mb-8">
-                Experience the Cali Door & Window difference for yourself. Contact us for a free consultation or quote.
+                Experience the Cali Door & Windows difference for yourself. Contact us for a free consultation or quote.
               </p>
               <motion.div
                 whileHover={{ scale: 1.03 }}
@@ -119,6 +179,12 @@ export default function TestimonialsPage() {
       </main>
       
       <Footer />
+      {loading && (
+        <div className="fixed bottom-4 right-4 px-4 py-2 bg-white shadow rounded text-sm">Loading testimonials...</div>
+      )}
+      {error && (
+        <div className="fixed bottom-4 right-4 px-4 py-2 bg-red-600 text-white shadow rounded text-sm">{error}</div>
+      )}
     </div>
   );
 } 

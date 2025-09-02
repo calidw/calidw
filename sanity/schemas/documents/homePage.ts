@@ -10,7 +10,7 @@ export default defineType({
       title: 'Page Title',
       type: 'string',
       validation: Rule => Rule.required(),
-      initialValue: 'Cali Door & Window | Premium Door & Window Solutions',
+      initialValue: 'Cali Door & Windows | Premium Door & Window Solutions',
     }),
     defineField({
       name: 'heroBanner',

@@ -24,8 +24,22 @@ function isValidSanityDataset(dataset: string | undefined): boolean {
   return Boolean(trimmedDataset && trimmedDataset.length > 0 && trimmedDataset !== 'Set' && /^[a-z0-9_-]+$/.test(trimmedDataset));
 }
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'ejlhmf3v';
-const dataset = (process.env.NEXT_PUBLIC_SANITY_DATASET || 'production').trim();
+// Normalize env vars and provide resilient fallbacks so we never silently fail in production
+let projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'ejlhmf3v';
+let dataset = (process.env.NEXT_PUBLIC_SANITY_DATASET || 'production').trim();
+
+// Lowercase dataset (Sanity datasets are lowercase) and fallback if invalid after normalization
+dataset = dataset.toLowerCase();
+if (!isValidSanityDataset(dataset)) {
+  console.warn('[sanity] Invalid dataset value after normalization, falling back to "production". Raw value:', process.env.NEXT_PUBLIC_SANITY_DATASET);
+  dataset = 'production';
+}
+
+// Final safety: if projectId failed validation but we have a known correct value, use it
+if (!isValidSanityProjectId(projectId)) {
+  console.warn('[sanity] Invalid projectId env value, falling back to hardcoded project id');
+  projectId = 'ejlhmf3v';
+}
 
 // Only create client if we have valid Sanity credentials
 const hasSanityConfig = isValidSanityProjectId(projectId) && isValidSanityDataset(dataset);
@@ -382,3 +396,93 @@ export async function getContactInfo() {
     return null;
   }
 } 
+
+// Fetch all testimonials (optionally limit)
+export async function getAllTestimonials(limit?: number) {
+  console.log('Fetching testimonials...', { limit });
+
+  if (!client) {
+    console.warn('Sanity client not configured, returning empty array for testimonials');
+    return [];
+  }
+
+  try {
+    let baseQuery = `*[_type == "testimonial"] | order(orderBy asc){
+      _id,
+      name,
+      location,
+      quote,
+      rating,
+      "image": image.asset->url,
+      projectType,
+      date,
+      isFeatured,
+      productReference->{
+        _id,
+        name,
+        "slug": slug.current
+      }
+    }`;
+
+    if (limit) {
+      baseQuery = `*[_type == "testimonial"] | order(orderBy asc)[0...$limit]{
+        _id,
+        name,
+        location,
+        quote,
+        rating,
+        "image": image.asset->url,
+        projectType,
+        date,
+        isFeatured,
+        productReference->{
+          _id,
+          name,
+          "slug": slug.current
+        }
+      }`;
+    }
+
+    console.log('Executing testimonials query...', { projectId, dataset });
+    let result = await client.fetch(baseQuery, limit ? { limit } : {});
+    console.log(`Testimonials fetched (primary query): ${result?.length || 0}`);
+
+    // If no results, attempt a fallback query without custom sort or limit to guard against empty orderBy values
+    if (!result || result.length === 0) {
+      console.warn('Primary testimonials query returned 0 results. Attempting fallback query (order by _createdAt desc)...');
+      const fallbackQuery = `*[_type == "testimonial"] | order(_createdAt desc){
+        _id,
+        name,
+        location,
+        quote,
+        rating,
+        "image": image.asset->url,
+        projectType,
+        date,
+        isFeatured,
+        productReference->{
+          _id,
+          name,
+          "slug": slug.current
+        }
+      }`;
+      result = await client.fetch(fallbackQuery);
+      console.log(`Testimonials fetched (fallback query): ${result?.length || 0}`);
+    }
+
+    if (!result || result.length === 0) {
+      console.warn('No testimonials found after fallback attempts. Returning empty array.');
+      return [];
+    }
+
+    return result;
+  } catch (error: unknown) {
+    const sanityError = error as SanityError;
+    console.error('Error fetching testimonials:', {
+      message: sanityError?.message || 'Unknown error',
+      stack: sanityError?.stack,
+      query: sanityError?.query
+    });
+    return [];
+  }
+}

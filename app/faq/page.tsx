@@ -83,15 +83,20 @@ const fallbackFaqData: FaqItem[] = [
   }
 ];
 
+// Complete fallback page data
 const fallbackPageData: FaqPageData = {
-  title: "Frequently Asked Questions | Cali Door & Window",
-  heading: "Frequently Asked Questions",
-  subheading: "Find answers to common questions about our products, services, and processes.",
+  title: 'Frequently Asked Questions | Cali Door & Windows',
+  heading: 'Frequently Asked Questions',
+  subheading: 'Find answers to common questions about our products, services, and processes.',
   faqs: fallbackFaqData,
-  ctaTitle: "Still have questions?",
-  ctaText: "Our team is here to help. Contact us for personalized assistance with your window and door needs.",
-  ctaButtonText: "Contact Us",
-  ctaButtonLink: "/contact"
+  ctaTitle: 'Still have questions?',
+  ctaText: 'Our team is here to help. Contact us for personalized assistance with your window and door needs.',
+  ctaButtonText: 'Contact Us',
+  ctaButtonLink: '/contact',
+  seo: {
+    title: 'Frequently Asked Questions | Cali Door & Windows',
+    description: 'Find answers to common questions about our windows and doors, installation process, warranty information, pricing, and maintenance.'
+  }
 };
 
 // Animation variants
@@ -121,6 +126,11 @@ export default function FaqPage() {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
+  
+  // Set document title
+  useEffect(() => {
+    document.title = 'Frequently Asked Questions | Cali Door & Windows';
+  }, []);
   
   useEffect(() => {
     const fetchData = async () => {

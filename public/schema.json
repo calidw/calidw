@@ -4,7 +4,7 @@
     {
       "@type": "LocalBusiness",
       "@id": "https://calidw.com/#business",
-      "name": "Cali Door & Window",
+      "name": "Cali Door & Windows",
       "url": "https://calidw.com",
       "logo": "https://calidw.com/calidw.png",
       "image": "https://calidw.com/images/og-image.jpg",
@@ -108,7 +108,7 @@
       "@type": "WebSite",
       "@id": "https://calidw.com/#website",
       "url": "https://calidw.com",
-      "name": "Cali Door & Window",
+      "name": "Cali Door & Windows",
       "description": "Premium doors and windows for your California home",
       "publisher": {
         "@id": "https://calidw.com/#business"
@@ -123,7 +123,7 @@
       "@type": "WebPage",
       "@id": "https://calidw.com/#webpage",
       "url": "https://calidw.com",
-      "name": "Cali Door & Window - Premium Doors and Windows for Your Home",
+      "name": "Cali Door & Windows - Premium Doors and Windows for Your Home",
       "isPartOf": {
         "@id": "https://calidw.com/#website"
       },

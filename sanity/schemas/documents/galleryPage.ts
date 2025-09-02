@@ -10,7 +10,7 @@ export default defineType({
       title: 'Page Title',
       type: 'string',
       validation: Rule => Rule.required(),
-      initialValue: 'Gallery | Cali Door & Window',
+      initialValue: 'Gallery | Cali Door & Windows',
     }),
     defineField({
       name: 'description',
