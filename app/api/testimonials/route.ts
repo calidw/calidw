@@ -8,7 +8,7 @@ const testimonialProjection = `{
   name,
   quote,
   location,
-  image,
+  "image": image.asset->url,
   rating,
   projectType,
   date,

@@ -31,7 +31,13 @@ export interface Testimonial {
   location?: string;
   quote: string;
   rating?: number;
-  image?: string;
+  image?: string | {
+    asset?: {
+      url?: string;
+      _ref?: string;
+    };
+    _type?: 'image';
+  };
   projectType?: string;
   date?: string;
   isFeatured?: boolean;
@@ -91,6 +97,34 @@ const Testimonials = ({
     firstItemImage: itemsToDisplay[0]?.image,
     imageUrls: itemsToDisplay.map(t => ({ name: t.name, image: t.image }))
   });
+
+  // Helper function to extract image URL from Sanity image object or string
+  const getImageUrl = (image: Testimonial['image']): string | null => {
+    if (!image) return null;
+    
+    // If it's already a string URL, return it
+    if (typeof image === 'string') {
+      return image.trim() !== '' ? image : null;
+    }
+    
+    // If it's a Sanity image object with asset URL
+    if (typeof image === 'object' && image.asset?.url) {
+      return image.asset.url;
+    }
+    
+    // If it's a Sanity image object with _ref
+    if (typeof image === 'object' && image.asset?._ref) {
+      // Convert Sanity asset reference to URL
+      const ref = image.asset._ref;
+      const match = ref.match(/image-([a-f\d]+)-(\d+x\d+)-(\w+)/);
+      if (match) {
+        const [, id, dimensions, format] = match;
+        return `https://cdn.sanity.io/images/ejlhmf3v/production/${id}-${dimensions}.${format}`;
+      }
+    }
+    
+    return null;
+  };
 
   // If no testimonials available, show loading or empty state instead of mock data
   if (!testimonials || testimonials.length === 0) {
@@ -170,25 +204,28 @@ const Testimonials = ({
                 </p>
                 
                 <footer className="mt-auto pt-6 border-t border-slate-100 flex items-center">
-                  {testimonial.image && testimonial.image.trim() !== '' ? (
-                    <Image 
-                      src={testimonial.image} 
-                      alt={`${testimonial.name}`}
-                      width={40}
-                      height={40}
-                      className="rounded-full object-cover mr-3"
-                      onError={() => {
-                        console.error('Image failed to load:', testimonial.image);
-                      }}
-                      onLoad={() => {
-                        console.log('Image loaded successfully:', testimonial.image);
-                      }}
-                    />
-                  ) : (
-                    <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 rounded-full flex items-center justify-center text-white mr-3 text-xl font-bold">
-                      {testimonial.name.charAt(0)}
-                    </div>
-                  )}
+                  {(() => {
+                    const imageUrl = getImageUrl(testimonial.image);
+                    return imageUrl ? (
+                      <Image 
+                        src={imageUrl} 
+                        alt={`${testimonial.name}`}
+                        width={40}
+                        height={40}
+                        className="rounded-full object-cover mr-3"
+                        onError={() => {
+                          console.error('Image failed to load:', testimonial.image);
+                        }}
+                        onLoad={() => {
+                          console.log('Image loaded successfully:', testimonial.image);
+                        }}
+                      />
+                    ) : (
+                      <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 rounded-full flex items-center justify-center text-white mr-3 text-xl font-bold">
+                        {testimonial.name.charAt(0)}
+                      </div>
+                    );
+                  })()}
                   <div>
                     <p className="font-semibold text-slate-900">{testimonial.name}</p>
                     {testimonial.location && (
